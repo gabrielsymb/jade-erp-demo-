@@ -1867,6 +1867,16 @@ function renderPizza(dados, config, vb) {
   });
 }
 var MSG_SEM_DADOS = "Sem dados para exibir";
+function montarGraficoReativo(config, dadosSignal, container, createEffect2) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "jade-grafico-reativo";
+  container.appendChild(wrapper);
+  createEffect2(() => {
+    const dados = dadosSignal.get();
+    wrapper.innerHTML = "";
+    wrapper.appendChild(criarGraficoSVG(config, dados));
+  });
+}
 function criarGraficoSVG(config, dados) {
   const wrapper = document.createElement("div");
   wrapper.className = "jade-grafico-wrapper";
@@ -2521,6 +2531,8 @@ var UIEngine = class {
   telaAtiva = null;
   bannerTimer = null;
   filtrosPorTela = /* @__PURE__ */ new Map();
+  /** Signals de dados por entidade — usados por cartões/gráficos reativos */
+  dadosSignals = /* @__PURE__ */ new Map();
   acoesPendentes = /* @__PURE__ */ new Map();
   constructor(memory, tema) {
     this.memory = memory;
@@ -2551,6 +2563,8 @@ var UIEngine = class {
       this.refs.limpar();
       this.modais.limpar();
       this.acoesPendentes.clear();
+      this.filtrosPorTela.clear();
+      this.dadosSignals.clear();
     }
     this.telaAtiva = config.nome;
     container.innerHTML = "";
@@ -2577,6 +2591,48 @@ var UIEngine = class {
   getFiltroPorTela(nome) {
     return this.filtrosPorTela.get(nome);
   }
+  /**
+   * Atualiza os dados de uma entidade e propaga para todos os
+   * cartões/gráficos reativos que a referenciam na tela atual.
+   */
+  setDadosEntidade(nome, dados) {
+    const s = this.dadosSignals.get(nome);
+    if (s) s.set(dados);
+  }
+  /** Retorna os nomes das entidades com signals ativos na tela atual. */
+  getEntidadesAtivas() {
+    return [...this.dadosSignals.keys()];
+  }
+  /**
+   * Computa o valor de uma função de agregação sobre um array de registros.
+   * Formata automaticamente como moeda se o campo sugerir valor monetário.
+   */
+  computarAgregacao(funcao, registros, campo) {
+    const c = campo ?? "";
+    if (funcao === "contagem") return registros.length.toLocaleString("pt-BR");
+    const nums = registros.map((r) => Number(r[c]) || 0);
+    let val = 0;
+    switch (funcao) {
+      case "soma":
+        val = nums.reduce((a, b) => a + b, 0);
+        break;
+      case "media":
+        val = nums.length ? nums.reduce((a, b) => a + b, 0) / nums.length : 0;
+        break;
+      case "maximo":
+        val = nums.length ? Math.max(...nums) : 0;
+        break;
+      case "minimo":
+        val = nums.length ? Math.min(...nums) : 0;
+        break;
+      default:
+        return "";
+    }
+    if (c && /preco|total|valor|custo|receita|salario|fatura|pagamento|desconto|saldo|lucro|despesa/i.test(c)) {
+      return val.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    return val.toLocaleString("pt-BR");
+  }
   criarTabela(config, container, dados, filtroBusca) {
     setEffectOwner(this.telaAtiva);
     const wrapper = document.createElement("div");
@@ -2592,9 +2648,13 @@ var UIEngine = class {
       busca.placeholder = "Buscar...";
       busca.className = "jade-tabela-busca";
       busca.setAttribute("aria-label", "Buscar na tabela");
+      let debounceTimer = null;
       busca.addEventListener("input", () => {
-        termoBusca.set(busca.value.toLowerCase());
-        paginaAtual.set(0);
+        if (debounceTimer) clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          termoBusca.set(busca.value.toLowerCase());
+          paginaAtual.set(0);
+        }, 200);
       });
       controles.appendChild(busca);
       wrapper.appendChild(controles);
@@ -2780,6 +2840,13 @@ var UIEngine = class {
    */
   renderizarTela(descriptor, container, dadosMap = {}) {
     const div = this.montarTela({ nome: descriptor.nome, titulo: descriptor.titulo }, container);
+    for (const [entidade, dados] of Object.entries(dadosMap)) {
+      if (this.dadosSignals.has(entidade)) {
+        this.dadosSignals.get(entidade).set(dados);
+      } else {
+        this.dadosSignals.set(entidade, new Signal(dados));
+      }
+    }
     for (const el2 of descriptor.elementos) {
       const props = Object.fromEntries(el2.propriedades.map((p) => [p.chave, p.valor]));
       const propsConhecidas = {
@@ -2854,7 +2921,20 @@ var UIEngine = class {
           break;
         }
         case "cartao": {
-          const conteudo = new Signal(props["conteudo"] ?? "");
+          const valorRaw = String(props["conteudo"] ?? "");
+          let conteudo;
+          if (valorRaw.startsWith("@")) {
+            const [funcao, entidade, campo] = valorRaw.slice(1).split(":");
+            const dadosSignal = this.dadosSignals.get(entidade) ?? new Signal([]);
+            conteudo = new Signal(this.computarAgregacao(funcao, dadosSignal.peek(), campo));
+            setEffectOwner(this.telaAtiva);
+            createEffect(() => {
+              conteudo.set(this.computarAgregacao(funcao, dadosSignal.get(), campo));
+            });
+            setEffectOwner(null);
+          } else {
+            conteudo = new Signal(valorRaw);
+          }
           this.criarCard(
             String(props["titulo"] ?? el2.nome),
             conteudo,
@@ -2871,7 +2951,10 @@ var UIEngine = class {
             eixoX: props["eixoX"] ? String(props["eixoX"]) : void 0,
             eixoY: props["eixoY"] ? String(props["eixoY"]) : void 0
           };
-          div.appendChild(criarGraficoSVG(graficoConfig, dadosMap[entidade] ?? []));
+          const dadosSignal = this.dadosSignals.get(entidade) ?? new Signal(dadosMap[entidade] ?? []);
+          setEffectOwner(this.telaAtiva);
+          montarGraficoReativo(graficoConfig, dadosSignal, div, createEffect);
+          setEffectOwner(null);
           break;
         }
         case "modal": {

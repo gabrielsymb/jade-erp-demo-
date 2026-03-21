@@ -481,8 +481,9 @@ async function mudarTela(nome, telas, db, ui, navItems) {
     }
   }
 
-  // Resolve @soma, @contagem, @media antes de renderizar
-  resolverAgregacoes(tela, dadosMap);
+  // NOTA: @soma/@contagem/@media agora são resolvidos reativamente pelo runtime.
+  // Mantemos resolverAgregacoes apenas para versões antigas de runtime que não suportam reatividade.
+  if (!ui.setDadosEntidade) resolverAgregacoes(tela, dadosMap);
 
   ui.renderizarTela(tela, container, dadosMap);
 
@@ -496,7 +497,11 @@ async function mudarTela(nome, telas, db, ui, navItems) {
       document.body.classList.add('jade-com-busca');
       buscaInput.value = '';
       signal.set('');
-      buscaInput.oninput = () => signal.set(buscaInput.value.toLowerCase());
+      let _bt = null;
+      buscaInput.oninput = () => {
+        clearTimeout(_bt);
+        _bt = setTimeout(() => signal.set(buscaInput.value.toLowerCase()), 200);
+      };
     } else {
       buscaWrapper.style.display = 'none';
       document.body.classList.remove('jade-com-busca');
@@ -616,15 +621,37 @@ async function iniciar() {
     }
   });
 
-  // Handler: jade:acao — dispara jade:acao:concluido após processar
-  // (evita spinner eterno em botões sem implementação WASM real)
-  window.addEventListener('jade:acao', (e) => {
-    const acao = e.detail?.acao;
-    // Navegar via router.navegar() é tratado pelo runtime interno —
-    // aqui garantimos que o botão sai do estado de carregamento
-    setTimeout(() => {
-      window.dispatchEvent(new CustomEvent('jade:acao:concluido', { detail: { acao } }));
-    }, 300);
+  // Handler: jade:acao — chama função WASM (se existir), atualiza dados reativamente
+  window.addEventListener('jade:acao', async (e) => {
+    const { acao, tela: nomeTela } = e.detail ?? {};
+    if (!acao) return;
+
+    let chamouWasm = false;
+    try {
+      // 1. Tenta chamar função WASM exportada com o mesmo nome
+      if (typeof runtime?.call === 'function') {
+        try {
+          runtime.call(acao);
+          chamouWasm = true;
+        } catch (_) { /* função não exportada ainda — ignora */ }
+      }
+
+      // 2. Recarrega dados das entidades ativas e propaga via signals (sem re-render completo)
+      const entidades = ui.getEntidadesAtivas?.() ?? [];
+      await Promise.all(entidades.map(async (entidade) => {
+        const dados = await db.find(entidade).catch(() => []);
+        ui.setDadosEntidade?.(entidade, dados);
+      }));
+
+      // 3. Notificação apenas se houve chamada WASM real
+      if (chamouWasm) {
+        ui.mostrarNotificacao('Ação concluída com sucesso', 'sucesso');
+      }
+    } catch (err) {
+      ui.mostrarNotificacao('Erro ao executar ação: ' + (err?.message ?? err), 'erro');
+    }
+
+    window.dispatchEvent(new CustomEvent('jade:acao:concluido', { detail: { acao } }));
   });
 
   // Renderiza primeira tela navegável
