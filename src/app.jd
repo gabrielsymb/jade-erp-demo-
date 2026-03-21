@@ -36,7 +36,7 @@ tela Dashboard "Dashboard"
   lista AlertasProdutos
     entidade: Produto
     campo: nome
-    rodape: estoque
+    subcampo: estoque
   fim
 fim
 
