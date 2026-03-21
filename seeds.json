@@ -1,0 +1,36 @@
+{
+  "Produto": [
+    { "id": "p1", "nome": "Notebook Dell Inspiron", "preco": 3499.90, "estoque": 12, "estoqueMinimo": 3, "ativo": true },
+    { "id": "p2", "nome": "Monitor LG 24\"", "preco": 1199.00, "estoque": 8, "estoqueMinimo": 2, "ativo": true },
+    { "id": "p3", "nome": "Teclado Mecânico Redragon", "preco": 349.90, "estoque": 25, "estoqueMinimo": 5, "ativo": true },
+    { "id": "p4", "nome": "Mouse Logitech MX Master", "preco": 599.90, "estoque": 1, "estoqueMinimo": 3, "ativo": true },
+    { "id": "p5", "nome": "Headset HyperX Cloud", "preco": 479.90, "estoque": 0, "estoqueMinimo": 2, "ativo": false },
+    { "id": "p6", "nome": "Webcam Logitech C920", "preco": 399.90, "estoque": 6, "estoqueMinimo": 2, "ativo": true },
+    { "id": "p7", "nome": "SSD Kingston 480GB", "preco": 249.90, "estoque": 18, "estoqueMinimo": 5, "ativo": true },
+    { "id": "p8", "nome": "Memória RAM 16GB DDR4", "preco": 189.90, "estoque": 2, "estoqueMinimo": 4, "ativo": true },
+    { "id": "p9", "nome": "Placa de Vídeo RTX 3060", "preco": 2199.00, "estoque": 4, "estoqueMinimo": 2, "ativo": true },
+    { "id": "p10", "nome": "Roteador TP-Link AX3000", "preco": 299.90, "estoque": 9, "estoqueMinimo": 3, "ativo": true }
+  ],
+  "Cliente": [
+    { "id": "c1", "nome": "Ana Paula Silva", "email": "ana.silva@email.com", "telefone": "(11) 98765-4321", "cidade": "São Paulo", "ativo": true },
+    { "id": "c2", "nome": "Carlos Eduardo Santos", "email": "carlos.santos@empresa.com", "telefone": "(21) 97654-3210", "cidade": "Rio de Janeiro", "ativo": true },
+    { "id": "c3", "nome": "Fernanda Lima", "email": "fernanda.lima@gmail.com", "telefone": "(31) 96543-2109", "cidade": "Belo Horizonte", "ativo": true },
+    { "id": "c4", "nome": "Roberto Oliveira", "email": "roberto@oliveira.net", "telefone": "(41) 95432-1098", "cidade": "Curitiba", "ativo": true },
+    { "id": "c5", "nome": "Juliana Costa", "email": "ju.costa@email.com", "telefone": "(51) 94321-0987", "cidade": "Porto Alegre", "ativo": true },
+    { "id": "c6", "nome": "Marcos Pereira", "email": "marcos.p@empresa.com", "telefone": "(61) 93210-9876", "cidade": "Brasília", "ativo": false },
+    { "id": "c7", "nome": "Beatriz Souza", "email": "bea.souza@gmail.com", "telefone": "(71) 92109-8765", "cidade": "Salvador", "ativo": true },
+    { "id": "c8", "nome": "Lucas Ferreira", "email": "lucas.ferreira@tech.com", "telefone": "(85) 91098-7654", "cidade": "Fortaleza", "ativo": true }
+  ],
+  "Venda": [
+    { "id": "v1", "clienteNome": "Ana Paula Silva", "total": 3499.90, "status": "concluída", "criadaEm": "2026-03-01" },
+    { "id": "v2", "clienteNome": "Carlos Eduardo Santos", "total": 1548.90, "status": "concluída", "criadaEm": "2026-03-03" },
+    { "id": "v3", "clienteNome": "Fernanda Lima", "total": 949.80, "status": "pendente", "criadaEm": "2026-03-05" },
+    { "id": "v4", "clienteNome": "Roberto Oliveira", "total": 2199.00, "status": "concluída", "criadaEm": "2026-03-07" },
+    { "id": "v5", "clienteNome": "Juliana Costa", "total": 599.90, "status": "concluída", "criadaEm": "2026-03-09" },
+    { "id": "v6", "clienteNome": "Ana Paula Silva", "total": 789.80, "status": "cancelada", "criadaEm": "2026-03-11" },
+    { "id": "v7", "clienteNome": "Beatriz Souza", "total": 4698.90, "status": "concluída", "criadaEm": "2026-03-13" },
+    { "id": "v8", "clienteNome": "Lucas Ferreira", "total": 249.90, "status": "concluída", "criadaEm": "2026-03-15" },
+    { "id": "v9", "clienteNome": "Carlos Eduardo Santos", "total": 1799.80, "status": "pendente", "criadaEm": "2026-03-17" },
+    { "id": "v10", "clienteNome": "Fernanda Lima", "total": 2799.00, "status": "concluída", "criadaEm": "2026-03-19" }
+  ]
+}
