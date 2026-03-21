@@ -1,0 +1,377 @@
+[
+  {
+    "nome": "Dashboard",
+    "titulo": "Dashboard",
+    "elementos": [
+      {
+        "tipo": "divisor",
+        "nome": "ResumoDia",
+        "propriedades": [
+          {
+            "chave": "rotulo",
+            "valor": "Resumo do dia"
+          }
+        ]
+      },
+      {
+        "tipo": "cartao",
+        "nome": "TotalVendas",
+        "propriedades": [
+          {
+            "chave": "titulo",
+            "valor": "Total de Vendas"
+          },
+          {
+            "chave": "conteudo",
+            "valor": "R$ 28.450,00"
+          },
+          {
+            "chave": "variante",
+            "valor": "sucesso"
+          }
+        ]
+      },
+      {
+        "tipo": "cartao",
+        "nome": "TotalProdutos",
+        "propriedades": [
+          {
+            "chave": "titulo",
+            "valor": "Produtos Cadastrados"
+          },
+          {
+            "chave": "conteudo",
+            "valor": "142"
+          },
+          {
+            "chave": "variante",
+            "valor": "info"
+          }
+        ]
+      },
+      {
+        "tipo": "cartao",
+        "nome": "TotalClientes",
+        "propriedades": [
+          {
+            "chave": "titulo",
+            "valor": "Clientes Ativos"
+          },
+          {
+            "chave": "conteudo",
+            "valor": "87"
+          },
+          {
+            "chave": "variante",
+            "valor": "primario"
+          }
+        ]
+      },
+      {
+        "tipo": "cartao",
+        "nome": "AlertasEstoque",
+        "propriedades": [
+          {
+            "chave": "titulo",
+            "valor": "Alertas de Estoque"
+          },
+          {
+            "chave": "conteudo",
+            "valor": "5 produtos abaixo do mínimo"
+          },
+          {
+            "chave": "variante",
+            "valor": "aviso"
+          }
+        ]
+      },
+      {
+        "tipo": "grafico",
+        "nome": "VendasSemana",
+        "propriedades": [
+          {
+            "chave": "tipo",
+            "valor": "barras"
+          },
+          {
+            "chave": "entidade",
+            "valor": "Venda"
+          },
+          {
+            "chave": "eixoX",
+            "valor": "criadaEm"
+          },
+          {
+            "chave": "eixoY",
+            "valor": "total"
+          }
+        ]
+      },
+      {
+        "tipo": "lista",
+        "nome": "AlertasProdutos",
+        "propriedades": [
+          {
+            "chave": "entidade",
+            "valor": "Produto"
+          },
+          {
+            "chave": "campo",
+            "valor": "nome"
+          },
+          {
+            "chave": "subcampo",
+            "valor": "estoque"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "nome": "TelaProdutos",
+    "titulo": "Produtos",
+    "elementos": [
+      {
+        "tipo": "toolbar",
+        "nome": "AcoesProdutos",
+        "propriedades": [
+          {
+            "chave": "botao",
+            "valor": "Novo Produto|novoProduto|mais|primario"
+          },
+          {
+            "chave": "botao",
+            "valor": "Exportar|exportarCSV|compartilhar|secundario"
+          }
+        ]
+      },
+      {
+        "tipo": "tabela",
+        "nome": "ListaProdutos",
+        "propriedades": [
+          {
+            "chave": "entidade",
+            "valor": "Produto"
+          },
+          {
+            "chave": "colunas",
+            "valor": [
+              "nome",
+              "preco",
+              "estoque",
+              "estoqueMinimo",
+              "ativo"
+            ]
+          },
+          {
+            "chave": "filtravel",
+            "valor": "verdadeiro"
+          },
+          {
+            "chave": "ordenavel",
+            "valor": "verdadeiro"
+          },
+          {
+            "chave": "paginacao",
+            "valor": "20"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "nome": "TelaClientes",
+    "titulo": "Clientes",
+    "elementos": [
+      {
+        "tipo": "toolbar",
+        "nome": "AcoesClientes",
+        "propriedades": [
+          {
+            "chave": "botao",
+            "valor": "Novo Cliente|novoCliente|mais|primario"
+          }
+        ]
+      },
+      {
+        "tipo": "tabela",
+        "nome": "ListaClientes",
+        "propriedades": [
+          {
+            "chave": "entidade",
+            "valor": "Cliente"
+          },
+          {
+            "chave": "colunas",
+            "valor": [
+              "nome",
+              "email",
+              "telefone",
+              "cidade",
+              "ativo"
+            ]
+          },
+          {
+            "chave": "filtravel",
+            "valor": "verdadeiro"
+          },
+          {
+            "chave": "ordenavel",
+            "valor": "verdadeiro"
+          },
+          {
+            "chave": "paginacao",
+            "valor": "20"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "nome": "TelaVendas",
+    "titulo": "Vendas",
+    "elementos": [
+      {
+        "tipo": "toolbar",
+        "nome": "AcoesVendas",
+        "propriedades": [
+          {
+            "chave": "botao",
+            "valor": "Nova Venda|novaVenda|mais|primario"
+          },
+          {
+            "chave": "botao",
+            "valor": "Exportar CSV|exportarCSV|compartilhar|secundario"
+          }
+        ]
+      },
+      {
+        "tipo": "divisor",
+        "nome": "ResumoMes",
+        "propriedades": [
+          {
+            "chave": "rotulo",
+            "valor": "Resumo do mês"
+          }
+        ]
+      },
+      {
+        "tipo": "cartao",
+        "nome": "TotalDoMes",
+        "propriedades": [
+          {
+            "chave": "titulo",
+            "valor": "Total do Mês"
+          },
+          {
+            "chave": "conteudo",
+            "valor": "R$ 28.450,00"
+          },
+          {
+            "chave": "variante",
+            "valor": "sucesso"
+          }
+        ]
+      },
+      {
+        "tipo": "cartao",
+        "nome": "TicketMedio",
+        "propriedades": [
+          {
+            "chave": "titulo",
+            "valor": "Ticket Médio"
+          },
+          {
+            "chave": "conteudo",
+            "valor": "R$ 327,00"
+          },
+          {
+            "chave": "variante",
+            "valor": "info"
+          }
+        ]
+      },
+      {
+        "tipo": "grafico",
+        "nome": "GraficoVendas",
+        "propriedades": [
+          {
+            "chave": "tipo",
+            "valor": "linha"
+          },
+          {
+            "chave": "entidade",
+            "valor": "Venda"
+          },
+          {
+            "chave": "eixoX",
+            "valor": "criadaEm"
+          },
+          {
+            "chave": "eixoY",
+            "valor": "total"
+          }
+        ]
+      },
+      {
+        "tipo": "tabela",
+        "nome": "TabelaVendas",
+        "propriedades": [
+          {
+            "chave": "entidade",
+            "valor": "Venda"
+          },
+          {
+            "chave": "colunas",
+            "valor": [
+              "clienteNome",
+              "total",
+              "status",
+              "criadaEm"
+            ]
+          },
+          {
+            "chave": "filtravel",
+            "valor": "verdadeiro"
+          },
+          {
+            "chave": "ordenavel",
+            "valor": "verdadeiro"
+          },
+          {
+            "chave": "paginacao",
+            "valor": "20"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "nome": "App",
+    "titulo": "ERP Demo",
+    "elementos": [
+      {
+        "tipo": "gaveta",
+        "nome": "MenuPrincipal",
+        "propriedades": [
+          {
+            "chave": "item",
+            "valor": "Dashboard|casa|Dashboard"
+          },
+          {
+            "chave": "item",
+            "valor": "Produtos|caixa|TelaProdutos"
+          },
+          {
+            "chave": "item",
+            "valor": "Clientes|usuarios|TelaClientes"
+          },
+          {
+            "chave": "item",
+            "valor": "Vendas|moeda|TelaVendas"
+          }
+        ]
+      }
+    ]
+  }
+]
