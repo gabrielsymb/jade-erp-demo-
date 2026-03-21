@@ -1,0 +1,7 @@
+entidade Venda
+  id: id
+  clienteNome: texto
+  total: moeda
+  status: texto
+  criadaEm: data
+fim

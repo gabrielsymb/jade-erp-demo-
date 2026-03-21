@@ -1,0 +1,8 @@
+entidade Produto
+  id: id
+  nome: texto
+  preco: moeda
+  estoque: numero
+  estoqueMinimo: numero
+  ativo: booleano
+fim

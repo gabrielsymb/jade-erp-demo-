@@ -1,0 +1,110 @@
+importar src/entidades/Produto
+importar src/entidades/Cliente
+importar src/entidades/Venda
+importar src/servicos/estoqueService
+
+tela Dashboard "Dashboard"
+  divisor ResumoDia
+    rotulo: "Resumo do dia"
+  fim
+  cartao TotalVendas
+    titulo: "Total de Vendas"
+    conteudo: "R$ 28.450,00"
+    variante: sucesso
+  fim
+  cartao TotalProdutos
+    titulo: "Produtos Cadastrados"
+    conteudo: "142"
+    variante: info
+  fim
+  cartao TotalClientes
+    titulo: "Clientes Ativos"
+    conteudo: "87"
+    variante: primario
+  fim
+  cartao AlertasEstoque
+    titulo: "Alertas de Estoque"
+    conteudo: "5 produtos abaixo do mínimo"
+    variante: aviso
+  fim
+  grafico VendasSemana
+    tipo: barras
+    entidade: Venda
+    eixoX: criadaEm
+    eixoY: total
+  fim
+  lista AlertasProdutos
+    entidade: Produto
+    campo: nome
+    rodape: estoque
+  fim
+fim
+
+tela TelaProdutos "Produtos"
+  toolbar AcoesProdutos
+    botao: "Novo Produto|novoProduto|mais|primario"
+    botao: "Exportar|exportarCSV|compartilhar|secundario"
+  fim
+  tabela ListaProdutos
+    entidade: Produto
+    colunas: nome, preco, estoque, estoqueMinimo, ativo
+    filtravel: verdadeiro
+    ordenavel: verdadeiro
+    paginacao: 20
+  fim
+fim
+
+tela TelaClientes "Clientes"
+  toolbar AcoesClientes
+    botao: "Novo Cliente|novoCliente|mais|primario"
+  fim
+  tabela ListaClientes
+    entidade: Cliente
+    colunas: nome, email, telefone, cidade, ativo
+    filtravel: verdadeiro
+    ordenavel: verdadeiro
+    paginacao: 20
+  fim
+fim
+
+tela TelaVendas "Vendas"
+  toolbar AcoesVendas
+    botao: "Nova Venda|novaVenda|mais|primario"
+    botao: "Exportar CSV|exportarCSV|compartilhar|secundario"
+  fim
+  divisor ResumoMes
+    rotulo: "Resumo do mês"
+  fim
+  cartao TotalDoMes
+    titulo: "Total do Mês"
+    conteudo: "R$ 28.450,00"
+    variante: sucesso
+  fim
+  cartao TicketMedio
+    titulo: "Ticket Médio"
+    conteudo: "R$ 327,00"
+    variante: info
+  fim
+  grafico GraficoVendas
+    tipo: linha
+    entidade: Venda
+    eixoX: criadaEm
+    eixoY: total
+  fim
+  tabela TabelaVendas
+    entidade: Venda
+    colunas: clienteNome, total, status, criadaEm
+    filtravel: verdadeiro
+    ordenavel: verdadeiro
+    paginacao: 20
+  fim
+fim
+
+tela App "ERP Demo"
+  gaveta MenuPrincipal
+    item: "Dashboard|casa|Dashboard"
+    item: "Produtos|caixa|TelaProdutos"
+    item: "Clientes|usuarios|TelaClientes"
+    item: "Vendas|moeda|TelaVendas"
+  fim
+fim

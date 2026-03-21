@@ -1,0 +1,13 @@
+servico estoqueService
+  funcao calcularSubtotal(preco: moeda, quantidade: numero) -> moeda
+    retornar preco * quantidade
+  fim
+
+  funcao emEstoque(quantidade: numero) -> booleano
+    se quantidade > 0
+      retornar verdadeiro
+    senao
+      retornar falso
+    fim
+  fim
+fim

@@ -1,0 +1,16 @@
+{
+  "name": "jade-erp-demo",
+  "version": "1.0.0",
+  "description": "Projeto Jade DSL — jade-erp-demo",
+  "type": "module",
+  "scripts": {
+    "compilar": "jadec src/app.jd -o dist/",
+    "verificar": "jadec src/app.jd --check",
+    "formatar": "jadec src/app.jd --format-write",
+    "lint": "jadec src/app.jd --lint",
+    "servir": "jade servir"
+  },
+  "devDependencies": {
+    "@yakuzaa/jade": "^0.1.11"
+  }
+}
