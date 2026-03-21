@@ -9,22 +9,22 @@ tela Dashboard "Dashboard"
   fim
   cartao TotalVendas
     titulo: "Total de Vendas"
-    conteudo: "R$ 28.450,00"
+    conteudo: soma(Venda.total)
     variante: sucesso
   fim
   cartao TotalProdutos
     titulo: "Produtos Cadastrados"
-    conteudo: "142"
+    conteudo: contagem(Produto)
     variante: info
   fim
   cartao TotalClientes
     titulo: "Clientes Ativos"
-    conteudo: "87"
+    conteudo: contagem(Cliente)
     variante: primario
   fim
-  cartao AlertasEstoque
-    titulo: "Alertas de Estoque"
-    conteudo: "5 produtos abaixo do mínimo"
+  cartao TicketMedio
+    titulo: "Ticket Médio"
+    conteudo: media(Venda.total)
     variante: aviso
   fim
   grafico VendasSemana
@@ -77,12 +77,12 @@ tela TelaVendas "Vendas"
   fim
   cartao TotalDoMes
     titulo: "Total do Mês"
-    conteudo: "R$ 28.450,00"
+    conteudo: soma(Venda.total)
     variante: sucesso
   fim
-  cartao TicketMedio
+  cartao TicketMedioVendas
     titulo: "Ticket Médio"
-    conteudo: "R$ 327,00"
+    conteudo: media(Venda.total)
     variante: info
   fim
   grafico GraficoVendas

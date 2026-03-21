@@ -11,6 +11,6 @@
     "servir": "jade servir"
   },
   "devDependencies": {
-    "@yakuzaa/jade": "^0.1.12"
+    "@yakuzaa/jade": "^0.1.13"
   }
 }
