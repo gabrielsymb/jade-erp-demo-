@@ -976,6 +976,7 @@ input[type="button"] {
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 1px 3px rgba(0,0,0,.08);
+  margin-bottom: 12px;
 }
 .jade-card-titulo { font-size: 0.875rem; color: var(--jade-texto-suave, #6b7280); margin-bottom: 8px; }
 .jade-card-valor  { font-size: 1.75rem; font-weight: 700; }
@@ -986,35 +987,31 @@ input[type="button"] {
 .jade-card-alerta   { border-left: 4px solid var(--jade-cor-aviso,   #d97706);  background: #fef9c3; }
 .jade-card-perigo   { border-left: 4px solid var(--jade-cor-erro,    #dc2626);  background: #fee2e2; }
 
-/* \u2500\u2500 Toast \u2500\u2500 */
-#jade-toasts {
-  position: fixed;
-  bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: min(calc(100vw - 32px), 400px);
-}
-.jade-toast {
-  padding: 14px 18px;
-  border-radius: 10px;
-  font-size: 0.9375rem;
+/* \u2500\u2500 Banner de notifica\xE7\xE3o (push) \u2500\u2500 */
+.jade-banner-inner {
+  height: 48px;
   display: flex;
   align-items: center;
   gap: 10px;
-  box-shadow: 0 4px 16px rgba(0,0,0,.15);
-  animation: jade-toast-entrar 0.2s ease;
+  padding: 0 16px;
+  border-left: 4px solid transparent;
+  font-size: 0.875rem;
+  font-weight: 500;
 }
-.jade-toast-saindo { animation: jade-toast-sair 0.2s ease forwards; }
-.jade-toast-sucesso { background: #dcfce7; color: #166534; }
-.jade-toast-erro    { background: #fee2e2; color: #991b1b; }
-.jade-toast-aviso   { background: #fef9c3; color: #854d0e; }
-.jade-toast-info    { background: #dbeafe; color: #1e40af; }
-@keyframes jade-toast-entrar { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
-@keyframes jade-toast-sair   { to   { opacity:0; transform:translateY(8px); } }
+.jade-banner-sucesso { background: #f0fdf4; border-left-color: #16a34a; color: #15803d; }
+.jade-banner-erro    { background: #fef2f2; border-left-color: #dc2626; color: #b91c1c; }
+.jade-banner-aviso   { background: #fffbeb; border-left-color: #d97706; color: #b45309; }
+.jade-banner-info    { background: #eff6ff; border-left-color: #2563eb; color: #1d4ed8; }
+.jade-banner-msg { flex: 1; min-width: 0; }
+.jade-banner-fechar {
+  display: flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; flex-shrink: 0;
+  border: none; background: transparent;
+  cursor: pointer; border-radius: 4px;
+  color: currentColor; opacity: 0.6;
+  transition: opacity 0.15s, background 0.15s;
+}
+.jade-banner-fechar:hover { opacity: 1; background: rgba(0,0,0,0.06); }
 
 /* \u2500\u2500 Skeleton \u2500\u2500 */
 .jade-skeleton {
@@ -1276,6 +1273,13 @@ input[type="button"] {
   color: var(--jade-primaria, #2563eb);
 }
 .jade-navegar-icone { display: flex; }
+.jade-navegar-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  text-align: center;
+}
 
 /* \u2500\u2500 Gaveta lateral (gaveta) \u2500\u2500 */
 .jade-gaveta-overlay {
@@ -2515,7 +2519,8 @@ var UIEngine = class {
   responsivo;
   modais;
   telaAtiva = null;
-  toastContainer = null;
+  bannerTimer = null;
+  filtrosPorTela = /* @__PURE__ */ new Map();
   acoesPendentes = /* @__PURE__ */ new Map();
   constructor(memory, tema) {
     this.memory = memory;
@@ -2568,14 +2573,18 @@ var UIEngine = class {
    *   desktop → grid com colunas, ordenação, paginação (responsivo.ts)
    * O runtime decide automaticamente — o usuário não controla o layout.
    */
-  criarTabela(config, container, dados) {
+  /** Retorna o Signal de filtro de busca para uma tela, se ela tiver tabela filtrável. */
+  getFiltroPorTela(nome) {
+    return this.filtrosPorTela.get(nome);
+  }
+  criarTabela(config, container, dados, filtroBusca) {
     setEffectOwner(this.telaAtiva);
     const wrapper = document.createElement("div");
     wrapper.className = "jade-tabela-wrapper";
     if (config.altura) wrapper.style.maxHeight = config.altura;
-    const termoBusca = new Signal("");
+    const termoBusca = filtroBusca ?? new Signal("");
     const paginaAtual = new Signal(0);
-    if (config.filtravel) {
+    if (config.filtravel && !filtroBusca) {
       const controles = document.createElement("div");
       controles.className = "jade-tabela-controles";
       const busca = document.createElement("input");
@@ -2714,43 +2723,50 @@ var UIEngine = class {
   ocultarCarregando(skeleton) {
     skeleton.remove();
   }
-  // ── Toast / Notificações ──────────────────────────────────────────────────
+  // ── Banner de notificação (push) ─────────────────────────────────────────
   /**
-   * Exibe uma notificação temporária no canto da tela.
-   * Desaparece automaticamente após `duracao` ms (padrão 3s).
+   * Exibe um banner no topo da tela que empurra o header e o conteúdo para baixo.
+   * Tipo 'erro' permanece até o usuário fechar. Os demais somem após `duracao` ms.
    */
-  mostrarNotificacao(mensagem, tipo = "info", duracao = 3e3) {
-    if (!this.toastContainer) {
-      this.toastContainer = document.createElement("div");
-      this.toastContainer.id = "jade-toasts";
-      document.body.appendChild(this.toastContainer);
+  mostrarNotificacao(mensagem, tipo = "info", duracao = 4e3) {
+    const banner = document.getElementById("jade-banner");
+    if (!banner) return;
+    if (this.bannerTimer) {
+      clearTimeout(this.bannerTimer);
+      this.bannerTimer = null;
     }
-    const duplicado = Array.from(this.toastContainer.children).some(
-      (t) => t.classList.contains(`jade-toast-${tipo}`) && t.textContent?.includes(mensagem)
-    );
-    if (duplicado) return;
     const iconesNomes = {
       sucesso: "sucesso_icone",
       erro: "erro_icone",
       aviso: "aviso",
       info: "info"
     };
-    const toast = document.createElement("div");
-    toast.className = `jade-toast jade-toast-${tipo}`;
-    toast.setAttribute("role", "alert");
-    const icon = document.createElement("span");
-    icon.className = "jade-toast-icone";
-    const iconeEl = criarElementoIcone(iconesNomes[tipo], 16);
-    if (iconeEl) icon.appendChild(iconeEl);
-    toast.appendChild(icon);
-    const msg = document.createTextNode(mensagem);
-    toast.appendChild(msg);
-    this.toastContainer.appendChild(toast);
-    const remover = () => {
-      toast.classList.add("jade-toast-saindo");
-      toast.addEventListener("animationend", () => toast.remove(), { once: true });
+    const inner = document.createElement("div");
+    inner.className = `jade-banner-inner jade-banner-${tipo}`;
+    const iconeEl = criarElementoIcone(iconesNomes[tipo], 18);
+    if (iconeEl) inner.appendChild(iconeEl);
+    const msg = document.createElement("span");
+    msg.className = "jade-banner-msg";
+    msg.textContent = mensagem;
+    inner.appendChild(msg);
+    const fechar = document.createElement("button");
+    fechar.className = "jade-banner-fechar";
+    fechar.setAttribute("aria-label", "Fechar notifica\xE7\xE3o");
+    const xIcon = criarElementoIcone("fechar", 16);
+    if (xIcon) fechar.appendChild(xIcon);
+    inner.appendChild(fechar);
+    banner.innerHTML = "";
+    banner.appendChild(inner);
+    banner.classList.add("jade-banner-visivel");
+    document.body.classList.add("jade-com-banner");
+    const dismiss = () => {
+      banner.classList.remove("jade-banner-visivel");
+      document.body.classList.remove("jade-com-banner");
     };
-    setTimeout(remover, duracao);
+    fechar.addEventListener("click", dismiss);
+    if (tipo !== "erro") {
+      this.bannerTimer = setTimeout(dismiss, duracao);
+    }
   }
   // ── Bridge: descriptor do compilador → componentes ───────────────────────
   /**
@@ -2793,17 +2809,24 @@ var UIEngine = class {
         case "tabela": {
           const entidade = String(props["entidade"] ?? el2.nome);
           const colunas = Array.isArray(props["colunas"]) ? props["colunas"].map((c) => ({ campo: c, titulo: c })) : [];
+          const filtravel = props["filtravel"] === "verdadeiro";
+          let filtroBusca;
+          if (filtravel) {
+            filtroBusca = new Signal("");
+            this.filtrosPorTela.set(descriptor.nome, filtroBusca);
+          }
           this.criarTabela(
             {
               entidade,
               colunas,
-              filtravel: props["filtravel"] === "verdadeiro",
+              filtravel,
               ordenavel: props["ordenavel"] === "verdadeiro",
               paginacao: props["paginacao"] === "verdadeiro" ? true : Number(props["paginacao"]) || false,
               altura: props["altura"] ? String(props["altura"]) : void 0
             },
             div,
-            dadosMap[entidade] ?? []
+            dadosMap[entidade] ?? [],
+            filtroBusca
           );
           break;
         }
