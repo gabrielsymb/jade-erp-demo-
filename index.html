@@ -33,16 +33,60 @@
       font-family: var(--jade-fonte);
       background: var(--jade-cor-fundo);
       color: var(--jade-cor-texto);
-    }
-
-    /* Layout principal — ocupa toda a tela, sem rolar o body */
-    #jade-app {
-      display: flex;
-      height: 100dvh;
       overflow: hidden;
     }
 
-    /* Nav lateral (desktop sempre visível) */
+    /* ── Header fixo ─────────────────────────────── */
+    #jade-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 52px;
+      background: var(--jade-cor-fundo-nav);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 16px 0 8px;
+      z-index: 300;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.06), 0 2px 8px rgba(0,0,0,0.2);
+      flex-shrink: 0;
+    }
+
+    #jade-hamburger {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      border: none;
+      border-radius: var(--jade-raio);
+      background: transparent;
+      color: rgba(255,255,255,0.85);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    #jade-hamburger:hover { background: rgba(255,255,255,0.1); }
+
+    #jade-header-titulo {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ── Layout principal (abaixo do header) ─────── */
+    #jade-app {
+      display: flex;
+      height: calc(100dvh - 52px);
+      margin-top: 52px;
+      overflow: hidden;
+    }
+
+    /* ── Nav lateral ─────────────────────────────── */
     #jade-nav {
       width: 240px;
       height: 100%;
@@ -51,28 +95,11 @@
       flex-direction: column;
       flex-shrink: 0;
       overflow-y: auto;
-      z-index: 10;
+      transition: width 0.2s ease;
     }
 
-    #jade-nav-header {
-      padding: 20px 16px 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      flex-shrink: 0;
-    }
-
-    #jade-nav-titulo {
-      font-size: 0.875rem;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    #jade-nav-versao {
-      font-size: 0.7rem;
-      color: rgba(255,255,255,0.35);
-      margin-top: 2px;
-    }
+    /* O nav-header foi movido para o #jade-header global */
+    #jade-nav-header { display: none; }
 
     #jade-nav-lista {
       flex: 1;
@@ -100,20 +127,17 @@
       transition: background 0.15s, color 0.15s;
       flex-shrink: 0;
     }
-
     .jade-nav-item:hover {
       background: rgba(255,255,255,0.07);
       color: rgba(255,255,255,0.9);
     }
-
     .jade-nav-ativo {
       background: var(--jade-cor-primaria) !important;
       color: #fff !important;
     }
-
     .jade-nav-icone { display: flex; align-items: center; }
 
-    /* Área de conteúdo — rola de forma independente */
+    /* ── Área de conteúdo ────────────────────────── */
     #jade-conteudo {
       flex: 1;
       min-width: 0;
@@ -123,11 +147,12 @@
       overflow-x: hidden;
     }
 
-    /* Overlay escuro para o drawer no mobile */
+    /* ── Overlay drawer (mobile) ─────────────────── */
     #jade-overlay {
       display: none;
       position: fixed;
       inset: 0;
+      top: 52px;
       background: rgba(0,0,0,0.45);
       z-index: 199;
       opacity: 0;
@@ -136,26 +161,6 @@
     #jade-overlay.visivel {
       display: block;
       opacity: 1;
-    }
-
-    /* Botão hambúrguer — só aparece no mobile */
-    #jade-hamburger {
-      display: none;
-      position: fixed;
-      top: 12px;
-      left: 12px;
-      z-index: 198;
-      width: 40px;
-      height: 40px;
-      border: none;
-      border-radius: var(--jade-raio);
-      background: var(--jade-cor-fundo-nav);
-      color: #fff;
-      cursor: pointer;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-      flex-shrink: 0;
     }
 
     /* Toolbar */
@@ -240,28 +245,29 @@
     @keyframes jade-giro { to { transform: rotate(360deg); } }
 
     /* Mobile: hamburger + drawer overlay */
-    @media (max-width: 768px) {
-      #jade-hamburger { display: flex; }
+    /* ── Desktop: sidebar pode ser colapsada ─────── */
+    #jade-nav.jade-nav-colapsada {
+      width: 0;
+      overflow: hidden;
+    }
 
+    /* ── Mobile: drawer slide-in (abaixo do header) ─ */
+    @media (max-width: 768px) {
       #jade-nav {
         position: fixed;
-        top: 0;
+        top: 52px;
         left: 0;
-        height: 100dvh;
+        height: calc(100dvh - 52px);
         z-index: 200;
         transform: translateX(-100%);
         transition: transform 0.25s ease;
         box-shadow: 4px 0 16px rgba(0,0,0,0.3);
+        width: 240px !important;
       }
-
       #jade-nav.jade-nav-aberto {
         transform: translateX(0);
       }
-
-      #jade-conteudo {
-        padding: 16px;
-        padding-top: 64px;
-      }
+      #jade-conteudo { padding: 16px; }
     }
   </style>
 </head>
@@ -271,15 +277,16 @@
     Carregando...
   </div>
 
-  <button id="jade-hamburger" aria-label="Abrir menu" aria-expanded="false" style="display:none"></button>
+  <header id="jade-header" style="display:none">
+    <button id="jade-hamburger" aria-label="Abrir menu" aria-expanded="false"></button>
+    <span id="jade-header-titulo">app</span>
+  </header>
+
   <div id="jade-overlay" role="presentation"></div>
 
   <div id="jade-app" style="display:none">
     <nav id="jade-nav" aria-label="Menu de navegação">
-      <div id="jade-nav-header">
-        <div id="jade-nav-titulo">app</div>
-        <div id="jade-nav-versao">feito com Jade DSL</div>
-      </div>
+      <div id="jade-nav-header"></div>
       <div id="jade-nav-lista" role="list"></div>
     </nav>
     <main id="jade-conteudo"></main>
@@ -328,30 +335,97 @@ function coletarEntidades(telas) {
     for (const el of tela.elementos || []) {
       for (const prop of el.propriedades || []) {
         if (prop.chave === 'entidade' && prop.valor) nomes.add(String(prop.valor));
+        // Agrega referências em marcadores @funcao:Entidade:campo
+        if (typeof prop.valor === 'string' && prop.valor.startsWith('@')) {
+          const partes = prop.valor.slice(1).split(':');
+          if (partes[1]) nomes.add(partes[1]);
+        }
       }
     }
   }
   return [...nomes];
 }
 
+// Formata valor numérico de acordo com o campo (moeda vs número simples)
+function formatarValor(v, campo) {
+  if (typeof v !== 'number' || isNaN(v)) return String(v ?? '');
+  const campoLower = (campo || '').toLowerCase();
+  // Campos monetários
+  if (/preco|total|valor|custo|receita|despesa|salario|pagamento|desconto|subtotal|moeda/.test(campoLower)) {
+    return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+  // Inteiro
+  if (Number.isInteger(v)) return v.toLocaleString('pt-BR');
+  return v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+// Resolve marcadores @funcao:Entidade:campo nos descritores de tela
+function resolverAgregacoes(tela, dadosMap) {
+  for (const el of tela.elementos || []) {
+    for (const prop of el.propriedades) {
+      if (typeof prop.valor !== 'string' || !prop.valor.startsWith('@')) continue;
+      const [funcao, entidade, campo] = prop.valor.slice(1).split(':');
+      const registros = dadosMap[entidade] ?? [];
+      let resultado;
+      switch (funcao) {
+        case 'soma':
+          resultado = registros.reduce((s, r) => s + (Number(r[campo]) || 0), 0);
+          prop.valor = formatarValor(resultado, campo);
+          break;
+        case 'contagem':
+          resultado = registros.length;
+          prop.valor = resultado.toLocaleString('pt-BR');
+          break;
+        case 'media':
+          resultado = registros.length
+            ? registros.reduce((s, r) => s + (Number(r[campo]) || 0), 0) / registros.length
+            : 0;
+          prop.valor = formatarValor(resultado, campo);
+          break;
+        case 'maximo':
+          resultado = registros.length ? Math.max(...registros.map(r => Number(r[campo]) || 0)) : 0;
+          prop.valor = formatarValor(resultado, campo);
+          break;
+        case 'minimo':
+          resultado = registros.length ? Math.min(...registros.map(r => Number(r[campo]) || 0)) : 0;
+          prop.valor = formatarValor(resultado, campo);
+          break;
+      }
+    }
+  }
+}
+
 async function mudarTela(nome, telas, db, ui, navItems) {
   const idx = telas.findIndex(t => t.nome === nome);
   if (idx < 0) return;
 
-  navItems.forEach((btn, i) => btn.classList.toggle('jade-nav-ativo', i === idx));
+  // navItems mapeia para telasNav (filtradas), mas idx é em telas (completa)
+  // Encontra o índice correto no navItems pelo nome
+  const navIdx = navItems.findIndex(b => b.dataset.tela === nome);
+  navItems.forEach((btn, i) => btn.classList.toggle('jade-nav-ativo', i === navIdx));
 
   const tela = telas[idx];
   const container = document.getElementById('jade-conteudo');
   container.innerHTML = '';
 
+  // Carrega todas as entidades referenciadas (inclusive em marcadores @)
   const dadosMap = {};
   for (const el of tela.elementos || []) {
     for (const prop of el.propriedades || []) {
-      if (prop.chave === 'entidade' && prop.valor && !dadosMap[prop.valor]) {
-        dadosMap[prop.valor] = await db.find(String(prop.valor)).catch(() => []);
+      const refs = [];
+      if (prop.chave === 'entidade' && prop.valor) refs.push(String(prop.valor));
+      if (typeof prop.valor === 'string' && prop.valor.startsWith('@')) {
+        const partes = prop.valor.slice(1).split(':');
+        if (partes[1]) refs.push(partes[1]);
+      }
+      for (const ref of refs) {
+        if (!dadosMap[ref]) dadosMap[ref] = await db.find(ref).catch(() => []);
       }
     }
   }
+
+  // Resolve @soma, @contagem, @media antes de renderizar
+  resolverAgregacoes(tela, dadosMap);
 
   ui.renderizarTela(tela, container, dadosMap);
 }
@@ -383,14 +457,13 @@ async function iniciar() {
 
   document.getElementById('jade-carregando')?.remove();
   document.getElementById('jade-app').style.display = '';
+  document.getElementById('jade-header').style.display = '';
 
-  // ── Hamburger (mobile) ──────────────────────────────────────────────────────
+  // ── Header + hambúrguer ──────────────────────────────────────────────────────
   const hamburger = document.getElementById('jade-hamburger');
   const overlay   = document.getElementById('jade-overlay');
   const navEl     = document.getElementById('jade-nav');
-
-  // Mostra o botão (estava display:none para não piscar antes do app carregar)
-  hamburger.style.display = '';
+  const isMobile  = () => window.innerWidth <= 768;
 
   const iconeMenu   = criarElementoIcone('menu', 22);
   const iconeFechar = criarElementoIcone('fechar', 22);
@@ -400,23 +473,29 @@ async function iniciar() {
     navEl.classList.add('jade-nav-aberto');
     overlay.classList.add('visivel');
     hamburger.setAttribute('aria-expanded', 'true');
-    if (iconeMenu && iconeFechar) {
+    if (iconeMenu && iconeFechar && hamburger.firstChild)
       hamburger.replaceChild(iconeFechar, hamburger.firstChild);
-    }
   }
   function fecharDrawer() {
     navEl.classList.remove('jade-nav-aberto');
     overlay.classList.remove('visivel');
     hamburger.setAttribute('aria-expanded', 'false');
-    if (iconeMenu && hamburger.firstChild !== iconeMenu) {
+    if (iconeMenu && hamburger.firstChild !== iconeMenu)
       hamburger.replaceChild(iconeMenu, hamburger.firstChild);
-    }
+  }
+  function toggleSidebar() {
+    navEl.classList.toggle('jade-nav-colapsada');
   }
 
-  hamburger.addEventListener('click', () =>
-    navEl.classList.contains('jade-nav-aberto') ? fecharDrawer() : abrirDrawer()
-  );
+  hamburger.addEventListener('click', () => {
+    if (isMobile()) {
+      navEl.classList.contains('jade-nav-aberto') ? fecharDrawer() : abrirDrawer();
+    } else {
+      toggleSidebar();
+    }
+  });
   overlay.addEventListener('click', fecharDrawer);
+  window.addEventListener('resize', () => { if (!isMobile()) fecharDrawer(); });
 
   if (telas.length === 0) {
     document.getElementById('jade-conteudo').innerHTML =

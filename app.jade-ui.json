@@ -23,7 +23,7 @@
           },
           {
             "chave": "conteudo",
-            "valor": "R$ 28.450,00"
+            "valor": "@soma:Venda:total"
           },
           {
             "chave": "variante",
@@ -41,7 +41,7 @@
           },
           {
             "chave": "conteudo",
-            "valor": "142"
+            "valor": "@contagem:Produto"
           },
           {
             "chave": "variante",
@@ -59,7 +59,7 @@
           },
           {
             "chave": "conteudo",
-            "valor": "87"
+            "valor": "@contagem:Cliente"
           },
           {
             "chave": "variante",
@@ -69,15 +69,15 @@
       },
       {
         "tipo": "cartao",
-        "nome": "AlertasEstoque",
+        "nome": "TicketMedio",
         "propriedades": [
           {
             "chave": "titulo",
-            "valor": "Alertas de Estoque"
+            "valor": "Ticket Médio"
           },
           {
             "chave": "conteudo",
-            "valor": "5 produtos abaixo do mínimo"
+            "valor": "@media:Venda:total"
           },
           {
             "chave": "variante",
@@ -265,7 +265,7 @@
           },
           {
             "chave": "conteudo",
-            "valor": "R$ 28.450,00"
+            "valor": "@soma:Venda:total"
           },
           {
             "chave": "variante",
@@ -275,7 +275,7 @@
       },
       {
         "tipo": "cartao",
-        "nome": "TicketMedio",
+        "nome": "TicketMedioVendas",
         "propriedades": [
           {
             "chave": "titulo",
@@ -283,7 +283,7 @@
           },
           {
             "chave": "conteudo",
-            "valor": "R$ 327,00"
+            "valor": "@media:Venda:total"
           },
           {
             "chave": "variante",
