@@ -27,16 +27,20 @@ tela Dashboard "Dashboard"
     conteudo: media(Venda.total)
     variante: aviso
   fim
+  divisor GraficosDiv
+    rotulo: "Análise visual"
+  fim
   grafico VendasSemana
     tipo: barras
     entidade: Venda
     eixoX: criadaEm
     eixoY: total
   fim
-  lista AlertasProdutos
-    entidade: Produto
-    campo: nome
-    subcampo: estoque
+  grafico DistribuicaoVendas
+    tipo: pizza
+    entidade: Venda
+    eixoX: status
+    eixoY: total
   fim
 fim
 
