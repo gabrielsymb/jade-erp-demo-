@@ -557,6 +557,12 @@ async function iniciar() {
 
   const ui = new UIEngine(runtime.getMemory());
 
+  // Pré-carrega TODAS as entidades nos signals para que seletores *Id funcionem
+  await Promise.all(entidades.map(async nome => {
+    const dados = await db.find(nome).catch(() => []);
+    ui.setDadosEntidade?.(nome, dados);
+  }));
+
   document.getElementById('jade-carregando')?.remove();
   document.getElementById('jade-app').style.display = '';
   document.getElementById('jade-header').style.display = '';

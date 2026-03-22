@@ -1777,8 +1777,42 @@ var Responsivo = class {
       });
     });
   }
+  _compilarFiltro(expr) {
+    const e = expr.trim();
+    if (!e) return null;
+    const m = e.match(/^(\w+)\s*(==|!=|>=|<=|>|<)\s*(.+)$/);
+    if (!m) {
+      return (item) => !!item[e];
+    }
+    const [, c, op, rawVal] = m;
+    let val = rawVal.trim();
+    if (val === "verdadeiro" || val === "true") val = true;
+    else if (val === "falso" || val === "false") val = false;
+    else if (!isNaN(Number(val))) val = Number(val);
+    else val = val.replace(/^["']|["']$/g, "");
+    switch (op) {
+      case "==":
+        return (item) => item[c] === val;
+      case "!=":
+        return (item) => item[c] !== val;
+      case ">":
+        return (item) => item[c] > val;
+      case "<":
+        return (item) => item[c] < val;
+      case ">=":
+        return (item) => item[c] >= val;
+      case "<=":
+        return (item) => item[c] <= val;
+      default:
+        return null;
+    }
+  }
   _filtrarOrdenar(dados, config, termo, campo, direcao) {
     let linhas = [...dados];
+    if (config.filtro) {
+      const fn = this._compilarFiltro(config.filtro);
+      if (fn) linhas = linhas.filter(fn);
+    }
     if (termo) {
       linhas = linhas.filter(
         (item) => config.colunas.some(
@@ -2178,7 +2212,7 @@ var ModalManager = class {
   fechar(nome) {
     this.modais.get(nome)?.close();
   }
-  criarCRUD(titulo, campos, onSalvar) {
+  criarCRUD(titulo, campos, onSalvar, formulaComputar) {
     const dialog = document.createElement("dialog");
     dialog.className = "jade-modal jade-modal-crud";
     dialog.setAttribute("aria-modal", "true");
@@ -2228,6 +2262,22 @@ var ModalManager = class {
         const boolVal = String(campo.valor);
         sel.value = boolVal === "true" || boolVal === "verdadeiro" ? "verdadeiro" : "falso";
         input = sel;
+      } else if (tipo === "seletor" && campo.opcoes && campo.opcoes.length > 0) {
+        const sel = document.createElement("select");
+        sel.id = `crud-${campo.nome}`;
+        sel.className = "jade-campo-input";
+        const optVazio = document.createElement("option");
+        optVazio.value = "";
+        optVazio.textContent = "\u2014 selecionar \u2014";
+        sel.appendChild(optVazio);
+        for (const op of campo.opcoes) {
+          const opt = document.createElement("option");
+          opt.value = op.valor;
+          opt.textContent = op.label;
+          sel.appendChild(opt);
+        }
+        if (campo.valor !== void 0 && campo.valor !== null) sel.value = String(campo.valor);
+        input = sel;
       } else {
         const inp = document.createElement("input");
         inp.id = `crud-${campo.nome}`;
@@ -2250,6 +2300,38 @@ var ModalManager = class {
       grupo.appendChild(input);
       form.appendChild(grupo);
     });
+    if (formulaComputar) {
+      const m = formulaComputar.match(/^(\w+)\s*=\s*(.+)$/);
+      if (m) {
+        const [, campoDestino, exprStr] = m;
+        const variaveis = exprStr.match(/[a-zA-Z_]\w*/g) ?? [];
+        const recalcular = () => {
+          const vals = {};
+          for (const v of variaveis) {
+            const inp = inputRefs[v];
+            if (inp) vals[v] = parseFloat(inp.value) || 0;
+          }
+          let expr = exprStr;
+          for (const [k, v] of Object.entries(vals)) {
+            expr = expr.replace(new RegExp("\\b" + k + "\\b", "g"), String(v));
+          }
+          try {
+            const resultado = Function('"use strict"; return (' + expr + ")")();
+            const destInput = inputRefs[campoDestino];
+            if (destInput && typeof resultado === "number") {
+              destInput.value = resultado.toFixed(2);
+              destInput.readOnly = true;
+              destInput.style.background = "var(--jade-cor-fundo-alt, #f5f5f5)";
+            }
+          } catch {
+          }
+        };
+        for (const v of variaveis) {
+          inputRefs[v]?.addEventListener("input", recalcular);
+        }
+        recalcular();
+      }
+    }
     corpo.appendChild(form);
     dialog.appendChild(corpo);
     const rodape = document.createElement("div");
@@ -2773,7 +2855,11 @@ var UIEngine = class {
   /** Signals de dados por entidade — usados por cartões/gráficos reativos */
   dadosSignals = /* @__PURE__ */ new Map();
   colunasEntidades = /* @__PURE__ */ new Map();
+  computarEntidades = /* @__PURE__ */ new Map();
+  // entidade → fórmula "total = a * b"
   acoesPendentes = /* @__PURE__ */ new Map();
+  /** Callback para carregar dados de qualquer entidade — configurado pelo html.js */
+  carregarEntidade;
   constructor(memory, tema) {
     this.memory = memory;
     this.store = new Store();
@@ -2861,19 +2947,38 @@ var UIEngine = class {
       const colunas = this.colunasEntidades.get(entidade) ?? [];
       campos = colunas.map((c) => ({ nome: c.campo, titulo: c.titulo, tipo: c.tipo }));
     }
+    campos = campos.map((c) => {
+      if (c.nome.endsWith("Id") && c.nome.length > 2) {
+        const nomeEntRef = c.nome.slice(0, -2);
+        const nomeEntCapit = nomeEntRef.charAt(0).toUpperCase() + nomeEntRef.slice(1);
+        const dados = this.dadosSignals.get(nomeEntCapit)?.peek() ?? this.dadosSignals.get(nomeEntRef)?.peek() ?? [];
+        if (dados.length > 0) {
+          return {
+            ...c,
+            tipo: "seletor",
+            opcoes: dados.map((r) => ({
+              valor: String(r.id ?? r._id ?? ""),
+              label: r.nome ?? r.titulo ?? r.descricao ?? r.email ?? String(r.id ?? "")
+            }))
+          };
+        }
+      }
+      return c;
+    });
     if (campos.length === 0) {
       console.warn(`[JADE] Nenhum campo encontrado para ${entidade}. Defina colunas na tabela.`);
       return;
     }
     const titulo = modo === "criar" ? `Novo ${entidade}` : `Editar ${entidade}`;
     const id = registro?.id ?? registro?._id;
+    const formulaComputar = this.computarEntidades.get(entidade);
     this.modais.criarCRUD(titulo, campos, (dados) => {
       if (modo === "criar") {
         window.dispatchEvent(new CustomEvent("jade:crud:criar", { detail: { entidade, dados } }));
       } else {
         window.dispatchEvent(new CustomEvent("jade:crud:atualizar", { detail: { entidade, id, dados } }));
       }
-    });
+    }, formulaComputar);
   }
   confirmarExclusao(entidade, id) {
     const dialog = document.createElement("dialog");
@@ -3184,6 +3289,8 @@ var UIEngine = class {
             this.filtrosPorTela.set(descriptor.nome, filtroBusca);
           }
           this.colunasEntidades.set(entidade, colunas.map((c) => ({ campo: c.campo, titulo: c.titulo, tipo: c.tipo })));
+          const computar = props["computar"] ? String(props["computar"]) : void 0;
+          if (computar) this.computarEntidades.set(entidade, computar);
           this.criarTabela(
             {
               entidade,
@@ -3192,7 +3299,9 @@ var UIEngine = class {
               acoes: acoes.length > 0 ? acoes : void 0,
               ordenavel: props["ordenavel"] === "verdadeiro",
               paginacao: props["paginacao"] === "verdadeiro" ? true : Number(props["paginacao"]) || false,
-              altura: props["altura"] ? String(props["altura"]) : void 0
+              altura: props["altura"] ? String(props["altura"]) : void 0,
+              filtro: props["filtro"] ? String(props["filtro"]) : void 0,
+              computar
             },
             div,
             dadosMap[entidade] ?? [],
