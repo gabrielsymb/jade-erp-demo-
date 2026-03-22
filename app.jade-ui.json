@@ -170,11 +170,26 @@
           {
             "chave": "colunas",
             "valor": [
-              "nome",
-              "preco",
-              "estoque",
-              "estoqueMinimo",
-              "ativo"
+              {
+                "campo": "nome",
+                "tipo": "texto"
+              },
+              {
+                "campo": "preco",
+                "tipo": "moeda"
+              },
+              {
+                "campo": "estoque",
+                "tipo": "numero"
+              },
+              {
+                "campo": "estoqueMinimo",
+                "tipo": "numero"
+              },
+              {
+                "campo": "ativo",
+                "tipo": "booleano"
+              }
             ]
           },
           {
@@ -225,11 +240,26 @@
           {
             "chave": "colunas",
             "valor": [
-              "nome",
-              "email",
-              "telefone",
-              "cidade",
-              "ativo"
+              {
+                "campo": "nome",
+                "tipo": "texto"
+              },
+              {
+                "campo": "email",
+                "tipo": "texto"
+              },
+              {
+                "campo": "telefone",
+                "tipo": "texto"
+              },
+              {
+                "campo": "cidade",
+                "tipo": "texto"
+              },
+              {
+                "campo": "ativo",
+                "tipo": "booleano"
+              }
             ]
           },
           {
@@ -352,10 +382,22 @@
           {
             "chave": "colunas",
             "valor": [
-              "clienteNome",
-              "total",
-              "status",
-              "criadaEm"
+              {
+                "campo": "clienteNome",
+                "tipo": "texto"
+              },
+              {
+                "campo": "total",
+                "tipo": "moeda"
+              },
+              {
+                "campo": "status",
+                "tipo": "texto"
+              },
+              {
+                "campo": "criadaEm",
+                "tipo": "data"
+              }
             ]
           },
           {

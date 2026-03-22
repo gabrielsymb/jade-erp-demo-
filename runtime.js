@@ -2097,11 +2097,22 @@ function criarGraficoSVG(config, dados) {
 }
 
 // ui/modal.ts
+var NOMES_BOOLEANOS = /^(ativo|ativa|habilitado|habilitada|disponivel|visivel|bloqueado|bloqueada|excluido|excluida|publicado|publicada|confirmado|confirmada|aprovado|aprovada|cancelado|cancelada|deletado|deletada|ativado|ativada|verificado|verificada|valido|valida|marcado|marcada|completo|completa|pago|paga|entregue|lido|lida)$/i;
+var NOMES_MOEDA = /preco|preco|total|valor|custo|desconto|salario|fatura|saldo|receita|tarifa|taxa/i;
+var NOMES_NUMERO = /estoque|quantidade|qtd|numero|contagem|peso|altura|largura|capacidade|limite|ordem|posicao|idade|prazo/i;
+var NOMES_DATA = /data|nascimento|vencimento|criada|criadaem|atualizado|atualizadoem|expiracao|entrega|inicio|fim$/i;
 function inferirTipoCampo(nome, valor) {
   if (typeof valor === "boolean") return "booleano";
+  if (NOMES_BOOLEANOS.test(nome)) return "booleano";
   if (typeof valor === "number") {
-    if (/preco|total|valor|custo|desconto|salario|fatura|saldo|receita/i.test(nome)) return "moeda";
+    if (NOMES_MOEDA.test(nome)) return "moeda";
     return Number.isInteger(valor) ? "numero" : "decimal";
+  }
+  if (valor === void 0 || valor === null) {
+    if (NOMES_MOEDA.test(nome)) return "moeda";
+    if (NOMES_NUMERO.test(nome)) return "numero";
+    if (NOMES_DATA.test(nome)) return "data";
+    return "texto";
   }
   if (typeof valor === "string") {
     if (/^\d{4}-\d{2}-\d{2}/.test(valor)) return "data";
@@ -2848,7 +2859,7 @@ var UIEngine = class {
       campos = Object.entries(registro).filter(([k]) => !CAMPOS_INTERNOS.has(k)).map(([k, v]) => ({ nome: k, titulo: k, valor: v }));
     } else {
       const colunas = this.colunasEntidades.get(entidade) ?? [];
-      campos = colunas.map((c) => ({ nome: c.campo, titulo: c.titulo }));
+      campos = colunas.map((c) => ({ nome: c.campo, titulo: c.titulo, tipo: c.tipo }));
     }
     if (campos.length === 0) {
       console.warn(`[JADE] Nenhum campo encontrado para ${entidade}. Defina colunas na tabela.`);
@@ -3164,7 +3175,7 @@ var UIEngine = class {
       switch (el2.tipo) {
         case "tabela": {
           const entidade = String(props["entidade"] ?? el2.nome);
-          const colunas = Array.isArray(props["colunas"]) ? props["colunas"].map((c) => ({ campo: c, titulo: c })) : [];
+          const colunas = Array.isArray(props["colunas"]) ? props["colunas"].map((c) => typeof c === "string" ? { campo: c, titulo: c } : { campo: c.campo, titulo: c.campo, tipo: c.tipo }) : [];
           const filtravel = props["filtravel"] === "verdadeiro";
           const acoes = Array.isArray(props["acoes"]) ? props["acoes"].filter((a) => ["editar", "excluir", "criar"].includes(a)) : [];
           let filtroBusca;
@@ -3172,7 +3183,7 @@ var UIEngine = class {
             filtroBusca = new Signal("");
             this.filtrosPorTela.set(descriptor.nome, filtroBusca);
           }
-          this.colunasEntidades.set(entidade, colunas.map((c) => ({ campo: c.campo, titulo: c.titulo })));
+          this.colunasEntidades.set(entidade, colunas.map((c) => ({ campo: c.campo, titulo: c.titulo, tipo: c.tipo })));
           this.criarTabela(
             {
               entidade,
