@@ -11,7 +11,7 @@
     "servir": "jade servir"
   },
   "devDependencies": {
-    "@yakuzaa/jade": "^0.1.18"
+    "@yakuzaa/jade": "^0.1.19"
   },
   "dependencies": {
     "@yakuzaa/jade-runtime": "^0.1.12"
