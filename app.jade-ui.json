@@ -86,6 +86,16 @@
         ]
       },
       {
+        "tipo": "divisor",
+        "nome": "GraficosDiv",
+        "propriedades": [
+          {
+            "chave": "rotulo",
+            "valor": "Análise visual"
+          }
+        ]
+      },
+      {
         "tipo": "grafico",
         "nome": "VendasSemana",
         "propriedades": [
@@ -108,20 +118,24 @@
         ]
       },
       {
-        "tipo": "lista",
-        "nome": "AlertasProdutos",
+        "tipo": "grafico",
+        "nome": "DistribuicaoVendas",
         "propriedades": [
           {
+            "chave": "tipo",
+            "valor": "pizza"
+          },
+          {
             "chave": "entidade",
-            "valor": "Produto"
+            "valor": "Venda"
           },
           {
-            "chave": "campo",
-            "valor": "nome"
+            "chave": "eixoX",
+            "valor": "status"
           },
           {
-            "chave": "subcampo",
-            "valor": "estoque"
+            "chave": "eixoY",
+            "valor": "total"
           }
         ]
       }
