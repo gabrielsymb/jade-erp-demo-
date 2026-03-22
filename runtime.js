@@ -817,6 +817,82 @@ var Router = class {
   }
 };
 
+// ui/icones.ts
+var CATALOGO = {
+  // ── Navegação ────────────────────────────────────────────────────────────
+  casa: `<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>`,
+  voltar: `<line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>`,
+  proximo: `<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>`,
+  acima: `<polyline points="18 15 12 9 6 15"/>`,
+  abaixo: `<polyline points="6 9 12 15 18 9"/>`,
+  menu: `<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>`,
+  fechar: `<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>`,
+  busca: `<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>`,
+  // ── Pessoas ──────────────────────────────────────────────────────────────
+  usuario: `<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>`,
+  usuarios: `<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>`,
+  // ── Dados e conteúdo ─────────────────────────────────────────────────────
+  grafico: `<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>`,
+  relatorio: `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>`,
+  tabela_icone: `<rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/>`,
+  lista_icone: `<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>`,
+  pasta: `<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>`,
+  imagem: `<rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>`,
+  // ── Ações CRUD ───────────────────────────────────────────────────────────
+  mais: `<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>`,
+  menos: `<line x1="5" y1="12" x2="19" y2="12"/>`,
+  editar: `<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>`,
+  excluir: `<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>`,
+  salvar: `<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>`,
+  copiar: `<rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>`,
+  compartilhar: `<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>`,
+  atualizar: `<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>`,
+  // ── Estoque / Negócio ────────────────────────────────────────────────────
+  caixa: `<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>`,
+  carrinho: `<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>`,
+  dinheiro: `<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>`,
+  cartao_credito: `<rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>`,
+  etiqueta: `<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/>`,
+  // ── Sistema ──────────────────────────────────────────────────────────────
+  configuracoes: `<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>`,
+  notificacao: `<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>`,
+  cadeado: `<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>`,
+  sair: `<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>`,
+  // ── Tempo e localização ──────────────────────────────────────────────────
+  calendario: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>`,
+  relogio: `<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>`,
+  localizacao: `<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>`,
+  // ── Comunicação ──────────────────────────────────────────────────────────
+  telefone: `<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9a16 16 0 0 0 6.91 6.91l.35-.35a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>`,
+  email: `<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>`,
+  // ── Feedback / Status ────────────────────────────────────────────────────
+  info: `<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>`,
+  aviso: `<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>`,
+  sucesso_icone: `<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>`,
+  erro_icone: `<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>`,
+  estrela: `<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>`,
+  favorito: `<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>`
+};
+function criarElementoIcone(nome, tamanho = 20) {
+  const conteudo = CATALOGO[nome.toLowerCase()];
+  if (!conteudo) return null;
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("width", String(tamanho));
+  svg.setAttribute("height", String(tamanho));
+  svg.setAttribute("fill", "none");
+  svg.setAttribute("stroke", "currentColor");
+  svg.setAttribute("stroke-width", "2");
+  svg.setAttribute("stroke-linecap", "round");
+  svg.setAttribute("stroke-linejoin", "round");
+  svg.setAttribute("aria-hidden", "true");
+  svg.innerHTML = conteudo;
+  return svg;
+}
+function listarIcones() {
+  return Object.keys(CATALOGO).sort();
+}
+
 // ui/responsive.ts
 var BP_MOBILE = 640;
 var CSS_ID = "jade-mobile-first";
@@ -1023,6 +1099,26 @@ input[type="button"] {
 .jade-skeleton-titulo { height: 28px; width: 40%; margin-bottom: 16px; }
 .jade-skeleton-linha  { height: 56px; margin-bottom: 8px; }
 @keyframes jade-shimmer { to { background-position: -200% 0; } }
+
+/* \u2500\u2500 A\xE7\xF5es por linha \u2500\u2500 */
+.jade-col-acoes-th { width: 90px; text-align: center; }
+.jade-col-acoes { text-align: center; white-space: nowrap; padding: 4px 8px; }
+.jade-btn-acao {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; min-height: unset;
+  border: none; border-radius: 6px; cursor: pointer;
+  background: transparent; padding: 0;
+  transition: background 0.15s;
+}
+.jade-btn-editar { color: var(--jade-cor-primaria, #2563eb); }
+.jade-btn-editar:hover { background: var(--jade-cor-destaque, #dbeafe); }
+.jade-btn-excluir { color: var(--jade-cor-erro, #dc2626); }
+.jade-btn-excluir:hover { background: #fee2e2; }
+.jade-card-acoes {
+  display: flex; gap: 8px; margin-top: 12px;
+  padding-top: 12px; border-top: 1px solid var(--jade-cor-borda, #e2e8f0);
+  justify-content: flex-end;
+}
 
 /* \u2500\u2500 Vazio \u2500\u2500 */
 .jade-tabela-vazio { text-align: center; padding: 32px; color: var(--jade-texto-suave, #6b7280); }
@@ -1441,9 +1537,9 @@ var Responsivo = class {
    *   desktop → grid com colunas
    * Troca automaticamente quando o viewport muda.
    */
-  adaptarTabela(config, wrapper, dados, termoBusca, paginaAtual) {
-    const renderMobile = () => this._renderLista(config, wrapper, dados, termoBusca, paginaAtual);
-    const renderDesktop = () => this._renderGrid(config, wrapper, dados, termoBusca, paginaAtual);
+  adaptarTabela(config, wrapper, dadosSignal, termoBusca, paginaAtual) {
+    const renderMobile = () => this._renderLista(config, wrapper, dadosSignal, termoBusca, paginaAtual);
+    const renderDesktop = () => this._renderGrid(config, wrapper, dadosSignal, termoBusca, paginaAtual);
     const render = () => this.isMobile() ? renderMobile() : renderDesktop();
     render();
     this.observar(() => render());
@@ -1492,47 +1588,81 @@ var Responsivo = class {
     document.head.appendChild(style);
   }
   // ── Renderização interna ────────────────────────────────────────────────────
-  _renderLista(config, wrapper, dados, termoBusca, paginaAtual) {
+  _renderLista(config, wrapper, dadosSignal, termoBusca, paginaAtual) {
     wrapper.querySelector(".jade-tabela-grid-wrapper")?.remove();
     let listaEl = wrapper.querySelector(".jade-lista-cards");
     if (!listaEl) {
       listaEl = document.createElement("div");
       listaEl.className = "jade-lista-cards";
       wrapper.appendChild(listaEl);
-    }
-    createEffect(() => {
-      const termo = termoBusca.get();
-      paginaAtual.get();
-      const linhas = this._filtrarOrdenar(dados, config, termo, null, "asc");
-      listaEl.innerHTML = "";
-      if (linhas.length === 0) {
-        const vazio = document.createElement("p");
-        vazio.className = "jade-tabela-vazio";
-        vazio.textContent = "Nenhum registro encontrado.";
-        listaEl.appendChild(vazio);
-        return;
-      }
-      linhas.forEach((item) => {
-        const card = document.createElement("div");
-        card.className = "jade-card-item";
-        config.colunas.forEach((col) => {
-          const campo = document.createElement("div");
-          campo.className = "jade-card-campo";
-          const labelEl = document.createElement("span");
-          labelEl.className = "jade-campo-label";
-          labelEl.textContent = col.titulo;
-          const valorEl = document.createElement("span");
-          valorEl.className = "jade-campo-valor";
-          valorEl.textContent = String(item[col.campo] ?? "");
-          campo.appendChild(labelEl);
-          campo.appendChild(valorEl);
-          card.appendChild(campo);
+      createEffect(() => {
+        const registros = dadosSignal.get();
+        const termo = termoBusca.get();
+        paginaAtual.get();
+        const linhas = this._filtrarOrdenar(registros, config, termo, null, "asc");
+        listaEl.innerHTML = "";
+        if (linhas.length === 0) {
+          const vazio = document.createElement("p");
+          vazio.className = "jade-tabela-vazio";
+          vazio.textContent = "Nenhum registro encontrado.";
+          listaEl.appendChild(vazio);
+          return;
+        }
+        linhas.forEach((item) => {
+          const card = document.createElement("div");
+          card.className = "jade-card-item";
+          config.colunas.forEach((col) => {
+            const campo = document.createElement("div");
+            campo.className = "jade-card-campo";
+            const labelEl = document.createElement("span");
+            labelEl.className = "jade-campo-label";
+            labelEl.textContent = col.titulo;
+            const valorEl = document.createElement("span");
+            valorEl.className = "jade-campo-valor";
+            valorEl.textContent = String(item[col.campo] ?? "");
+            campo.appendChild(labelEl);
+            campo.appendChild(valorEl);
+            card.appendChild(campo);
+          });
+          if (config.acoes?.length) {
+            const acoesDiv = document.createElement("div");
+            acoesDiv.className = "jade-card-acoes";
+            if (config.acoes.includes("editar")) {
+              const btn = document.createElement("button");
+              btn.className = "jade-botao jade-botao-secundario";
+              btn.style.cssText = "padding:6px 12px;font-size:0.8125rem;display:inline-flex;align-items:center;gap:6px;";
+              const icone = criarElementoIcone("editar", 14);
+              if (icone) btn.appendChild(icone);
+              btn.appendChild(document.createTextNode("Editar"));
+              btn.addEventListener("click", () => {
+                window.dispatchEvent(new CustomEvent("jade:linha:editar", {
+                  detail: { entidade: config.entidade, registro: item }
+                }));
+              });
+              acoesDiv.appendChild(btn);
+            }
+            if (config.acoes.includes("excluir")) {
+              const btn = document.createElement("button");
+              btn.className = "jade-botao jade-botao-perigo";
+              btn.style.cssText = "padding:6px 12px;font-size:0.8125rem;display:inline-flex;align-items:center;gap:6px;";
+              const icone = criarElementoIcone("excluir", 14);
+              if (icone) btn.appendChild(icone);
+              btn.appendChild(document.createTextNode("Excluir"));
+              btn.addEventListener("click", () => {
+                window.dispatchEvent(new CustomEvent("jade:linha:excluir", {
+                  detail: { entidade: config.entidade, id: item.id ?? item._id }
+                }));
+              });
+              acoesDiv.appendChild(btn);
+            }
+            card.appendChild(acoesDiv);
+          }
+          listaEl.appendChild(card);
         });
-        listaEl.appendChild(card);
       });
-    });
+    }
   }
-  _renderGrid(config, wrapper, dados, termoBusca, paginaAtual) {
+  _renderGrid(config, wrapper, dadosSignal, termoBusca, paginaAtual) {
     wrapper.querySelector(".jade-lista-cards")?.remove();
     let gridWrapper = wrapper.querySelector(".jade-tabela-grid-wrapper");
     if (gridWrapper) return;
@@ -1566,6 +1696,12 @@ var Responsivo = class {
       });
       headerRow.appendChild(th);
     });
+    if (config.acoes?.length) {
+      const thAcoes = document.createElement("th");
+      thAcoes.textContent = "A\xE7\xF5es";
+      thAcoes.className = "jade-col-acoes-th";
+      headerRow.appendChild(thAcoes);
+    }
     thead.appendChild(headerRow);
     table.appendChild(thead);
     const tbody = document.createElement("tbody");
@@ -1580,11 +1716,12 @@ var Responsivo = class {
     }
     wrapper.appendChild(gridWrapper);
     createEffect(() => {
+      const registros = dadosSignal.get();
       const termo = termoBusca.get();
       const pagAtual = paginaAtual.get();
       campOrdem.get();
       direcaoOrdem.get();
-      let linhas = this._filtrarOrdenar(dados, config, termo, campOrdem.peek(), direcaoOrdem.peek());
+      let linhas = this._filtrarOrdenar(registros, config, termo, campOrdem.peek(), direcaoOrdem.peek());
       if (linhasPorPagina > 0 && paginacaoDiv) {
         const total = Math.max(1, Math.ceil(linhas.length / linhasPorPagina));
         const pag = Math.min(pagAtual, total - 1);
@@ -1601,6 +1738,41 @@ var Responsivo = class {
           td.textContent = String(item[col.campo] ?? "");
           tr.appendChild(td);
         });
+        if (config.acoes?.length) {
+          const tdAcoes = document.createElement("td");
+          tdAcoes.className = "jade-col-acoes";
+          if (config.acoes.includes("editar")) {
+            const btn = document.createElement("button");
+            btn.className = "jade-btn-acao jade-btn-editar";
+            btn.setAttribute("aria-label", "Editar");
+            btn.title = "Editar";
+            const icone = criarElementoIcone("editar", 16);
+            if (icone) btn.appendChild(icone);
+            btn.addEventListener("click", (e) => {
+              e.stopPropagation();
+              window.dispatchEvent(new CustomEvent("jade:linha:editar", {
+                detail: { entidade: config.entidade, registro: item }
+              }));
+            });
+            tdAcoes.appendChild(btn);
+          }
+          if (config.acoes.includes("excluir")) {
+            const btn = document.createElement("button");
+            btn.className = "jade-btn-acao jade-btn-excluir";
+            btn.setAttribute("aria-label", "Excluir");
+            btn.title = "Excluir";
+            const icone = criarElementoIcone("excluir", 16);
+            if (icone) btn.appendChild(icone);
+            btn.addEventListener("click", (e) => {
+              e.stopPropagation();
+              window.dispatchEvent(new CustomEvent("jade:linha:excluir", {
+                detail: { entidade: config.entidade, id: item.id ?? item._id }
+              }));
+            });
+            tdAcoes.appendChild(btn);
+          }
+          tr.appendChild(tdAcoes);
+        }
         tbody.appendChild(tr);
       });
     });
@@ -1742,7 +1914,7 @@ function renderBarras(dados, config, vb) {
     const cx = PAD.left + barGap * i + barGap / 2;
     const by = PAD.top + CH - bh;
     const label = String(d[campoX] ?? i);
-    vb.appendChild(el("rect", {
+    const rect = el("rect", {
       x: cx - barW / 2,
       y: by,
       width: barW,
@@ -1750,7 +1922,11 @@ function renderBarras(dados, config, vb) {
       rx: 4,
       fill: CORES[i % CORES.length],
       opacity: 0.85
-    }));
+    });
+    const titleBarra = document.createElementNS(SVG_NS, "title");
+    titleBarra.textContent = `${fmtLabel(label)}: ${fmtNum(val)}`;
+    rect.appendChild(titleBarra);
+    vb.appendChild(rect);
     const labelFmt = fmtLabel(label);
     const labelEl = txt(labelFmt, {
       x: cx,
@@ -1806,14 +1982,18 @@ function renderLinha(dados, config, vb) {
     "stroke-linecap": "round"
   }));
   pts.forEach((p) => {
-    vb.appendChild(el("circle", {
+    const circle = el("circle", {
       cx: p.x.toFixed(1),
       cy: p.y.toFixed(1),
       r: 4,
       fill: "#fff",
       stroke: CORES[0],
       "stroke-width": 2
-    }));
+    });
+    const titlePonto = document.createElementNS(SVG_NS, "title");
+    titlePonto.textContent = `${fmtLabel(p.label)}: ${fmtNum(p.val)}`;
+    circle.appendChild(titlePonto);
+    vb.appendChild(circle);
     const labelFmt = fmtLabel(p.label);
     const labelEl = txt(labelFmt, {
       x: p.x.toFixed(1),
@@ -1838,19 +2018,23 @@ function renderPizza(dados, config, vb) {
   const total = itens.reduce((s, it) => s + it.val, 0) || 1;
   let angulo = -Math.PI / 2;
   itens.forEach((it) => {
-    const slice = it.val / total * Math.PI * 2;
+    const angSlice = it.val / total * Math.PI * 2;
     const x1 = CX + R * Math.cos(angulo);
     const y1 = CY + R * Math.sin(angulo);
-    const x2 = CX + R * Math.cos(angulo + slice);
-    const y2 = CY + R * Math.sin(angulo + slice);
-    const large = slice > Math.PI ? 1 : 0;
-    vb.appendChild(el("path", {
+    const x2 = CX + R * Math.cos(angulo + angSlice);
+    const y2 = CY + R * Math.sin(angulo + angSlice);
+    const large = angSlice > Math.PI ? 1 : 0;
+    const sliceEl = el("path", {
       d: `M${CX},${CY} L${x1.toFixed(1)},${y1.toFixed(1)} A${R},${R} 0 ${large},1 ${x2.toFixed(1)},${y2.toFixed(1)} Z`,
       fill: it.cor,
       stroke: "#fff",
       "stroke-width": 2
-    }));
-    angulo += slice;
+    });
+    const titleSlice = document.createElementNS(SVG_NS, "title");
+    titleSlice.textContent = `${it.label}: ${fmtNum(it.val)} (${(it.val / total * 100).toFixed(1)}%)`;
+    sliceEl.appendChild(titleSlice);
+    vb.appendChild(sliceEl);
+    angulo += angSlice;
   });
   const LX = 262, LY0 = 28, LH = 22;
   itens.slice(0, 8).forEach((it, i) => {
@@ -1913,6 +2097,18 @@ function criarGraficoSVG(config, dados) {
 }
 
 // ui/modal.ts
+function inferirTipoCampo(nome, valor) {
+  if (typeof valor === "boolean") return "booleano";
+  if (typeof valor === "number") {
+    if (/preco|total|valor|custo|desconto|salario|fatura|saldo|receita/i.test(nome)) return "moeda";
+    return Number.isInteger(valor) ? "numero" : "decimal";
+  }
+  if (typeof valor === "string") {
+    if (/^\d{4}-\d{2}-\d{2}/.test(valor)) return "data";
+    if (/^\d{2}:\d{2}/.test(valor)) return "hora";
+  }
+  return "texto";
+}
 var ModalManager = class {
   modais = /* @__PURE__ */ new Map();
   /**
@@ -1970,6 +2166,114 @@ var ModalManager = class {
   }
   fechar(nome) {
     this.modais.get(nome)?.close();
+  }
+  criarCRUD(titulo, campos, onSalvar) {
+    const dialog = document.createElement("dialog");
+    dialog.className = "jade-modal jade-modal-crud";
+    dialog.setAttribute("aria-modal", "true");
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+    const header = document.createElement("div");
+    header.className = "jade-modal-header";
+    const tituloEl = document.createElement("h2");
+    tituloEl.className = "jade-modal-titulo";
+    tituloEl.textContent = titulo;
+    const btnFechar = document.createElement("button");
+    btnFechar.className = "jade-modal-fechar";
+    btnFechar.setAttribute("aria-label", "Fechar");
+    btnFechar.textContent = "\u2715";
+    btnFechar.addEventListener("click", () => dialog.close());
+    header.appendChild(tituloEl);
+    header.appendChild(btnFechar);
+    dialog.appendChild(header);
+    const corpo = document.createElement("div");
+    corpo.className = "jade-modal-corpo";
+    const form = document.createElement("form");
+    form.className = "jade-formulario";
+    form.noValidate = true;
+    const inputRefs = {};
+    campos.forEach((campo) => {
+      const grupo = document.createElement("div");
+      grupo.className = "jade-campo";
+      const label = document.createElement("label");
+      label.htmlFor = `crud-${campo.nome}`;
+      label.className = "jade-campo-label";
+      label.textContent = campo.titulo;
+      const tipo = campo.tipo ?? inferirTipoCampo(campo.nome, campo.valor);
+      let input;
+      if (tipo === "booleano") {
+        const sel = document.createElement("select");
+        sel.id = `crud-${campo.nome}`;
+        sel.className = "jade-campo-input";
+        const optSim = document.createElement("option");
+        optSim.value = "verdadeiro";
+        optSim.textContent = "Sim";
+        const optNao = document.createElement("option");
+        optNao.value = "falso";
+        optNao.textContent = "N\xE3o";
+        sel.appendChild(optSim);
+        sel.appendChild(optNao);
+        const boolVal = String(campo.valor);
+        sel.value = boolVal === "true" || boolVal === "verdadeiro" ? "verdadeiro" : "falso";
+        input = sel;
+      } else {
+        const inp = document.createElement("input");
+        inp.id = `crud-${campo.nome}`;
+        inp.className = "jade-campo-input";
+        inp.name = campo.nome;
+        if (tipo === "numero") {
+          inp.type = "number";
+          inp.step = "1";
+        } else if (tipo === "decimal" || tipo === "moeda") {
+          inp.type = "number";
+          inp.step = "0.01";
+        } else if (tipo === "data") inp.type = "date";
+        else if (tipo === "hora") inp.type = "time";
+        else inp.type = "text";
+        if (campo.valor !== void 0 && campo.valor !== null) inp.value = String(campo.valor);
+        input = inp;
+      }
+      inputRefs[campo.nome] = input;
+      grupo.appendChild(label);
+      grupo.appendChild(input);
+      form.appendChild(grupo);
+    });
+    corpo.appendChild(form);
+    dialog.appendChild(corpo);
+    const rodape = document.createElement("div");
+    rodape.className = "jade-modal-rodape";
+    const btnCancelar = document.createElement("button");
+    btnCancelar.type = "button";
+    btnCancelar.className = "jade-botao jade-botao-secundario";
+    btnCancelar.textContent = "Cancelar";
+    btnCancelar.addEventListener("click", () => dialog.close());
+    const btnSalvar = document.createElement("button");
+    btnSalvar.type = "button";
+    btnSalvar.className = "jade-botao jade-botao-primario";
+    btnSalvar.textContent = "Salvar";
+    btnSalvar.addEventListener("click", () => {
+      const dados = {};
+      for (const [nome, inputEl] of Object.entries(inputRefs)) {
+        const campo = campos.find((c) => c.nome === nome);
+        const tipo = campo?.tipo ?? inferirTipoCampo(nome, campo?.valor);
+        const val = inputEl.value;
+        if (tipo === "numero") dados[nome] = parseInt(val) || 0;
+        else if (tipo === "decimal" || tipo === "moeda") dados[nome] = parseFloat(val) || 0;
+        else if (tipo === "booleano") dados[nome] = val === "verdadeiro";
+        else dados[nome] = val;
+      }
+      onSalvar(dados);
+      dialog.close();
+    });
+    rodape.appendChild(btnCancelar);
+    rodape.appendChild(btnSalvar);
+    dialog.appendChild(rodape);
+    document.body.appendChild(dialog);
+    dialog.showModal();
+    dialog.addEventListener("close", () => {
+      setTimeout(() => dialog.remove(), 300);
+    });
   }
   /** Remove todos os modais do DOM e limpa o registro. */
   limpar() {
@@ -2036,82 +2340,6 @@ function criarAbas(config, container) {
   container.appendChild(wrapper);
   if (config.abas.length > 0) ativar(0);
   return conteudo;
-}
-
-// ui/icones.ts
-var CATALOGO = {
-  // ── Navegação ────────────────────────────────────────────────────────────
-  casa: `<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>`,
-  voltar: `<line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>`,
-  proximo: `<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>`,
-  acima: `<polyline points="18 15 12 9 6 15"/>`,
-  abaixo: `<polyline points="6 9 12 15 18 9"/>`,
-  menu: `<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>`,
-  fechar: `<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>`,
-  busca: `<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>`,
-  // ── Pessoas ──────────────────────────────────────────────────────────────
-  usuario: `<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>`,
-  usuarios: `<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>`,
-  // ── Dados e conteúdo ─────────────────────────────────────────────────────
-  grafico: `<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>`,
-  relatorio: `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>`,
-  tabela_icone: `<rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/>`,
-  lista_icone: `<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>`,
-  pasta: `<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>`,
-  imagem: `<rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>`,
-  // ── Ações CRUD ───────────────────────────────────────────────────────────
-  mais: `<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>`,
-  menos: `<line x1="5" y1="12" x2="19" y2="12"/>`,
-  editar: `<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>`,
-  excluir: `<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>`,
-  salvar: `<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>`,
-  copiar: `<rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>`,
-  compartilhar: `<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>`,
-  atualizar: `<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>`,
-  // ── Estoque / Negócio ────────────────────────────────────────────────────
-  caixa: `<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>`,
-  carrinho: `<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>`,
-  dinheiro: `<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>`,
-  cartao_credito: `<rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>`,
-  etiqueta: `<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/>`,
-  // ── Sistema ──────────────────────────────────────────────────────────────
-  configuracoes: `<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>`,
-  notificacao: `<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>`,
-  cadeado: `<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>`,
-  sair: `<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>`,
-  // ── Tempo e localização ──────────────────────────────────────────────────
-  calendario: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>`,
-  relogio: `<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>`,
-  localizacao: `<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>`,
-  // ── Comunicação ──────────────────────────────────────────────────────────
-  telefone: `<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9a16 16 0 0 0 6.91 6.91l.35-.35a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>`,
-  email: `<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>`,
-  // ── Feedback / Status ────────────────────────────────────────────────────
-  info: `<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>`,
-  aviso: `<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>`,
-  sucesso_icone: `<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>`,
-  erro_icone: `<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>`,
-  estrela: `<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>`,
-  favorito: `<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>`
-};
-function criarElementoIcone(nome, tamanho = 20) {
-  const conteudo = CATALOGO[nome.toLowerCase()];
-  if (!conteudo) return null;
-  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.setAttribute("viewBox", "0 0 24 24");
-  svg.setAttribute("width", String(tamanho));
-  svg.setAttribute("height", String(tamanho));
-  svg.setAttribute("fill", "none");
-  svg.setAttribute("stroke", "currentColor");
-  svg.setAttribute("stroke-width", "2");
-  svg.setAttribute("stroke-linecap", "round");
-  svg.setAttribute("stroke-linejoin", "round");
-  svg.setAttribute("aria-hidden", "true");
-  svg.innerHTML = conteudo;
-  return svg;
-}
-function listarIcones() {
-  return Object.keys(CATALOGO).sort();
 }
 
 // ui/lista.ts
@@ -2533,6 +2761,7 @@ var UIEngine = class {
   filtrosPorTela = /* @__PURE__ */ new Map();
   /** Signals de dados por entidade — usados por cartões/gráficos reativos */
   dadosSignals = /* @__PURE__ */ new Map();
+  colunasEntidades = /* @__PURE__ */ new Map();
   acoesPendentes = /* @__PURE__ */ new Map();
   constructor(memory, tema) {
     this.memory = memory;
@@ -2547,6 +2776,14 @@ var UIEngine = class {
     }
     window.addEventListener("jade:acao:concluido", ((e) => {
       if (e.detail?.acao) this.concluirAcao(e.detail.acao);
+    }));
+    window.addEventListener("jade:linha:editar", ((e) => {
+      const { entidade, registro } = e.detail ?? {};
+      if (entidade && registro) this.abrirModalCRUD("editar", entidade, registro);
+    }));
+    window.addEventListener("jade:linha:excluir", ((e) => {
+      const { entidade, id } = e.detail ?? {};
+      if (entidade && id) this.confirmarExclusao(entidade, id);
     }));
   }
   // ── Gestão de telas ───────────────────────────────────────────────────────
@@ -2565,6 +2802,7 @@ var UIEngine = class {
       this.acoesPendentes.clear();
       this.filtrosPorTela.clear();
       this.dadosSignals.clear();
+      this.colunasEntidades.clear();
     }
     this.telaAtiva = config.nome;
     container.innerHTML = "";
@@ -2602,6 +2840,56 @@ var UIEngine = class {
   /** Retorna os nomes das entidades com signals ativos na tela atual. */
   getEntidadesAtivas() {
     return [...this.dadosSignals.keys()];
+  }
+  abrirModalCRUD(modo, entidade, registro) {
+    const CAMPOS_INTERNOS = /* @__PURE__ */ new Set(["id", "_rev", "_id", "criadaEm", "atualizadoEm", "updatedAt", "createdAt"]);
+    let campos;
+    if (modo === "editar" && registro) {
+      campos = Object.entries(registro).filter(([k]) => !CAMPOS_INTERNOS.has(k)).map(([k, v]) => ({ nome: k, titulo: k, valor: v }));
+    } else {
+      const colunas = this.colunasEntidades.get(entidade) ?? [];
+      campos = colunas.map((c) => ({ nome: c.campo, titulo: c.titulo }));
+    }
+    if (campos.length === 0) {
+      console.warn(`[JADE] Nenhum campo encontrado para ${entidade}. Defina colunas na tabela.`);
+      return;
+    }
+    const titulo = modo === "criar" ? `Novo ${entidade}` : `Editar ${entidade}`;
+    const id = registro?.id ?? registro?._id;
+    this.modais.criarCRUD(titulo, campos, (dados) => {
+      if (modo === "criar") {
+        window.dispatchEvent(new CustomEvent("jade:crud:criar", { detail: { entidade, dados } }));
+      } else {
+        window.dispatchEvent(new CustomEvent("jade:crud:atualizar", { detail: { entidade, id, dados } }));
+      }
+    });
+  }
+  confirmarExclusao(entidade, id) {
+    const dialog = document.createElement("dialog");
+    dialog.className = "jade-modal";
+    dialog.setAttribute("aria-modal", "true");
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+    dialog.innerHTML = `
+      <div class="jade-modal-header">
+        <h2 class="jade-modal-titulo">Confirmar exclus\xE3o</h2>
+      </div>
+      <div class="jade-modal-corpo" style="padding:16px 20px">
+        <p>Tem certeza que deseja excluir este registro?<br>Esta a\xE7\xE3o n\xE3o pode ser desfeita.</p>
+      </div>
+      <div class="jade-modal-rodape">
+        <button class="jade-botao jade-botao-secundario" data-acao="cancelar">Cancelar</button>
+        <button class="jade-botao jade-botao-perigo" data-acao="confirmar">Excluir</button>
+      </div>`;
+    document.body.appendChild(dialog);
+    dialog.querySelector('[data-acao="cancelar"]')?.addEventListener("click", () => dialog.close());
+    dialog.querySelector('[data-acao="confirmar"]')?.addEventListener("click", () => {
+      window.dispatchEvent(new CustomEvent("jade:crud:remover", { detail: { entidade, id } }));
+      dialog.close();
+    });
+    dialog.addEventListener("close", () => setTimeout(() => dialog.remove(), 300));
+    dialog.showModal();
   }
   /**
    * Computa o valor de uma função de agregação sobre um array de registros.
@@ -2660,7 +2948,8 @@ var UIEngine = class {
       wrapper.appendChild(controles);
     }
     container.appendChild(wrapper);
-    this.responsivo.adaptarTabela(config, wrapper, dados, termoBusca, paginaAtual);
+    const dadosSignalTabela = this.dadosSignals.get(config.entidade) ?? new Signal(dados);
+    this.responsivo.adaptarTabela(config, wrapper, dadosSignalTabela, termoBusca, paginaAtual);
     setEffectOwner(null);
   }
   // ── Formulário ────────────────────────────────────────────────────────────
@@ -2850,7 +3139,7 @@ var UIEngine = class {
     for (const el2 of descriptor.elementos) {
       const props = Object.fromEntries(el2.propriedades.map((p) => [p.chave, p.valor]));
       const propsConhecidas = {
-        tabela: /* @__PURE__ */ new Set(["entidade", "colunas", "filtravel", "ordenavel", "paginacao", "altura"]),
+        tabela: /* @__PURE__ */ new Set(["entidade", "colunas", "filtravel", "ordenavel", "paginacao", "altura", "acoes"]),
         formulario: /* @__PURE__ */ new Set(["entidade", "campos", "enviar"]),
         botao: /* @__PURE__ */ new Set(["acao", "clique", "icone", "tipo"]),
         cartao: /* @__PURE__ */ new Set(["titulo", "conteudo", "variante"]),
@@ -2877,16 +3166,19 @@ var UIEngine = class {
           const entidade = String(props["entidade"] ?? el2.nome);
           const colunas = Array.isArray(props["colunas"]) ? props["colunas"].map((c) => ({ campo: c, titulo: c })) : [];
           const filtravel = props["filtravel"] === "verdadeiro";
+          const acoes = Array.isArray(props["acoes"]) ? props["acoes"].filter((a) => ["editar", "excluir", "criar"].includes(a)) : [];
           let filtroBusca;
           if (filtravel) {
             filtroBusca = new Signal("");
             this.filtrosPorTela.set(descriptor.nome, filtroBusca);
           }
+          this.colunasEntidades.set(entidade, colunas.map((c) => ({ campo: c.campo, titulo: c.titulo })));
           this.criarTabela(
             {
               entidade,
               colunas,
               filtravel,
+              acoes: acoes.length > 0 ? acoes : void 0,
               ordenavel: props["ordenavel"] === "verdadeiro",
               paginacao: props["paginacao"] === "verdadeiro" ? true : Number(props["paginacao"]) || false,
               altura: props["altura"] ? String(props["altura"]) : void 0

@@ -416,6 +416,29 @@ function formatarValor(v, campo) {
   return v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
+function exportarCSV(dados, nomeArquivo) {
+  if (!dados.length) return;
+  const campos = Object.keys(dados[0]).filter(k => !k.startsWith('_') && k !== 'id');
+  const linhas = [
+    campos.join(';'),
+    ...dados.map(r => campos.map(c => {
+      const v = String(r[c] ?? '').replace(/"/g, '""');
+      return '"' + v + '"';
+    }).join(';'))
+  ];
+  const bom = '﻿'; // UTF-8 BOM para Excel
+  const blob = new Blob([bom + linhas.join('
+')], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = (nomeArquivo || 'exportacao') + '.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 // Resolve marcadores @funcao:Entidade:campo nos descritores de tela
 function resolverAgregacoes(tela, dadosMap) {
   for (const el of tela.elementos || []) {
@@ -621,37 +644,90 @@ async function iniciar() {
     }
   });
 
-  // Handler: jade:acao — chama função WASM (se existir), atualiza dados reativamente
+  // Handler: jade:acao — CRUD, WASM, CSV export
   window.addEventListener('jade:acao', async (e) => {
     const { acao, tela: nomeTela } = e.detail ?? {};
     if (!acao) return;
 
+    // Padrão: novoXxx → abre modal de criação para entidade Xxx
+    const matchNovo = acao.match(/^novo([A-Z][a-zA-Z]*)/);
+    if (matchNovo) {
+      ui.abrirModalCRUD?.('criar', matchNovo[1]);
+      window.dispatchEvent(new CustomEvent('jade:acao:concluido', { detail: { acao } }));
+      return;
+    }
+
+    // Padrão: exportarCSV ou exportarCsv → exporta entidade ativa como CSV
+    if (/^exportar(CSV|Csv|csv)?/.test(acao)) {
+      const entidades = ui.getEntidadesAtivas?.() ?? [];
+      const entidade = entidades[0];
+      if (entidade) {
+        const dados = await db.find(entidade).catch(() => []);
+        exportarCSV(dados, entidade);
+        ui.mostrarNotificacao(entidade + ' exportado com sucesso', 'sucesso');
+      }
+      window.dispatchEvent(new CustomEvent('jade:acao:concluido', { detail: { acao } }));
+      return;
+    }
+
     let chamouWasm = false;
     try {
-      // 1. Tenta chamar função WASM exportada com o mesmo nome
       if (typeof runtime?.call === 'function') {
-        try {
-          runtime.call(acao);
-          chamouWasm = true;
-        } catch (_) { /* função não exportada ainda — ignora */ }
+        try { runtime.call(acao); chamouWasm = true; } catch (_) { /* não exportado */ }
       }
 
-      // 2. Recarrega dados das entidades ativas e propaga via signals (sem re-render completo)
       const entidades = ui.getEntidadesAtivas?.() ?? [];
       await Promise.all(entidades.map(async (entidade) => {
         const dados = await db.find(entidade).catch(() => []);
         ui.setDadosEntidade?.(entidade, dados);
       }));
 
-      // 3. Notificação apenas se houve chamada WASM real
-      if (chamouWasm) {
-        ui.mostrarNotificacao('Ação concluída com sucesso', 'sucesso');
-      }
+      if (chamouWasm) ui.mostrarNotificacao('Ação concluída com sucesso', 'sucesso');
     } catch (err) {
       ui.mostrarNotificacao('Erro ao executar ação: ' + (err?.message ?? err), 'erro');
     }
 
     window.dispatchEvent(new CustomEvent('jade:acao:concluido', { detail: { acao } }));
+  });
+
+  // Handlers CRUD: criar, atualizar, remover
+  window.addEventListener('jade:crud:criar', async (e) => {
+    const { entidade, dados } = e.detail ?? {};
+    if (!entidade || !dados) return;
+    try {
+      await db.insert(entidade, dados);
+      const registros = await db.find(entidade);
+      ui.setDadosEntidade?.(entidade, registros);
+      ui.mostrarNotificacao(entidade + ' criado com sucesso', 'sucesso');
+    } catch (err) {
+      ui.mostrarNotificacao('Erro ao criar: ' + (err?.message ?? err), 'erro');
+    }
+  });
+
+  window.addEventListener('jade:crud:atualizar', async (e) => {
+    const { entidade, id, dados } = e.detail ?? {};
+    if (!entidade || !id || !dados) return;
+    try {
+      await db.update(entidade, id, dados);
+      const registros = await db.find(entidade);
+      ui.setDadosEntidade?.(entidade, registros);
+      ui.mostrarNotificacao(entidade + ' atualizado', 'sucesso');
+    } catch (err) {
+      ui.mostrarNotificacao('Erro ao atualizar: ' + (err?.message ?? err), 'erro');
+    }
+  });
+
+  window.addEventListener('jade:crud:remover', async (e) => {
+    const { entidade, id } = e.detail ?? {};
+    if (!entidade || !id) return;
+    try {
+      await db.delete(entidade, id);
+      const registros = await db.find(entidade);
+      ui.setDadosEntidade?.(entidade, registros);
+      ui.mostrarNotificacao(entidade + ' excluído', 'info');
+    } catch (err) {
+      ui.mostrarNotificacao('Erro ao excluir: ' + (err?.message ?? err), 'erro');
+    }
   });
 
   // Renderiza primeira tela navegável

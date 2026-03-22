@@ -174,6 +174,13 @@
           {
             "chave": "paginacao",
             "valor": "20"
+          },
+          {
+            "chave": "acoes",
+            "valor": [
+              "editar",
+              "excluir"
+            ]
           }
         ]
       }
@@ -222,6 +229,13 @@
           {
             "chave": "paginacao",
             "valor": "20"
+          },
+          {
+            "chave": "acoes",
+            "valor": [
+              "editar",
+              "excluir"
+            ]
           }
         ]
       }
@@ -341,6 +355,13 @@
           {
             "chave": "paginacao",
             "valor": "20"
+          },
+          {
+            "chave": "acoes",
+            "valor": [
+              "editar",
+              "excluir"
+            ]
           }
         ]
       }
