@@ -51,6 +51,7 @@ tela TelaProdutos "Produtos"
     filtravel: verdadeiro
     ordenavel: verdadeiro
     paginacao: 20
+    acoes: editar, excluir
   fim
 fim
 
@@ -64,6 +65,7 @@ tela TelaClientes "Clientes"
     filtravel: verdadeiro
     ordenavel: verdadeiro
     paginacao: 20
+    acoes: editar, excluir
   fim
 fim
 
@@ -97,6 +99,7 @@ tela TelaVendas "Vendas"
     filtravel: verdadeiro
     ordenavel: verdadeiro
     paginacao: 20
+    acoes: editar, excluir
   fim
 fim
 
